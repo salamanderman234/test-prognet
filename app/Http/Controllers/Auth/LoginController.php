@@ -37,6 +37,7 @@ class LoginController extends Controller
     }
 
     public function userRegister(){
+        // dd(request()->email);
         $credentials = request()->validate([
             'email'=>'required|unique:users|email',
             'name'=>'required',
@@ -53,9 +54,7 @@ class LoginController extends Controller
         Auth::attempt($credentials);
         request()->session()->regenerate();
         // redirect ke halaman verifikasi email
-        return redirect()
-            ->route('email.verify')
-            ->with('message','Signup Berhasil ! Silahkan Login Untuk Melanjutkan');
+        return redirect()->route('user.profile');
     }
     // admin
     public function adminLogin(){

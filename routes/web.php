@@ -18,7 +18,7 @@ use App\Http\Controllers\Notification\UserNotificationsController;
 Auth::routes(['verify'=> true]);
 Route::get('/', function () {
     return view('welcome');
-})->middleware(['guest','back']);
+})->name('welcome')->middleware(['back']);
 
 Route::prefix('/')->name('user.')->group(function(){
     Route::middleware(['guest','back'])->group(function () {
@@ -28,7 +28,7 @@ Route::prefix('/')->name('user.')->group(function(){
         Route::post('/signup/save',[LoginController::class,'userRegister'])->name('save_signup');        
     });
     Route::middleware(['auth','back','verified'])->group(function () {
-        Route::get('/home',[UserController::class,'home'])->name('home');
+        Route::get('/profile',[UserController::class,'home'])->name('profile');
         Route::get('/notifications',[UserNotificationsController::class,'show'])->name('notifications');
         Route::post('/send_notification/{user}',[UserNotificationsController::class,'sendNotification'])->name('send_notif');
     });

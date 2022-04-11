@@ -38,17 +38,11 @@
 <body class="h-100 d-flex align-items-center justify-content-center">
     <div class="container border border-dark w-75 rounded">
         <div class="row">
-            <div class="col-6 bg-image" style="background-image: '{{asset('images/gallery-image-2.jpg')}}';">
+            <div class="col-6 bg-image" style="background-image: url('{{asset('images/gallery-image-2.jpg')}}');">
             </div>
             <div class="col-6">
                 <div class="container w-75 p-5" style="font-size: 15px;">
                     <h1 class="mb-4">Login</h1>
-                    {{-- @if ($errors->any())
-                        {{$errors->first()}}
-                    @else
-                        {{"asiap"}}
-                    @endif --}}
-                    
                     <form action="{{ route('user.autenticate') }}" method="post">
                         @csrf
                         <div class="@if($errors->any()){{'mb-0'}}@else{{'mb-3 '}}@endif">

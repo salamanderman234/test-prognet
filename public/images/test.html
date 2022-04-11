@@ -38,18 +38,12 @@
 <body class="h-100 d-flex align-items-center justify-content-center">
     <div class="container w-75 rounded p-5">
         <div class="row d-flex justify-content-center align-items-center">
-            <img src="{{asset('images/email_sent.png')}}" alt="" class="w-25">
+            <img src="email_sent.png" alt="" class="w-25">
         </div>
         <div class="row d-flex align-items-center">
-            <form method="POST" action="{{ route('verification.resend') }}">
-                @csrf
-                <h1 class="text-center fs-3">A verification link has been sent to your email address !</h1>
-                <h2 class="text-center fs-5">Before proceeding, please check your email for a verification link</h2>
-                <h3 class="text-center" style="font-size: 15px;">If you did not receive the email, 
-                    <button type="submit" class="btn btn-link p-0 m-0 align-baseline d-inline">{{ ('click here to request another') }}
-                    </button>
-                </h3>
-            </form>
+            <h1 class="text-center fs-3">A verification link has been sent to your email address !</h1>
+            <h2 class="text-center fs-5">Before proceeding, please check your email for a verification link</h2>
+            <h3 class="text-center" style="font-size: 15px;">If you did not receive the email, please click here</h3>
         </div>
     </div>
 </body>
