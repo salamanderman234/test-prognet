@@ -6,10 +6,14 @@ use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+    private function getAllTableName(){
+        $tables = DB::select('SHOW TABLES');
+        return $tables;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,9 +21,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $tables = getAllTableName();
+        return view('dashboard.admin.home',compact('tables'));
     }
-
     /**
      * Show the form for creating a new resource.
      *

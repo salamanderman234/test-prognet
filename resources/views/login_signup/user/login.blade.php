@@ -24,6 +24,7 @@
         }
         .button:hover {
             background-color: #0056B3;
+            color: white;
         }
         .error-message {
             font-size: 13px;
@@ -31,6 +32,9 @@
         }
         .is-invalid {
             border-color:red !important; 
+        }
+        .invalid-message {
+            font-size: 0.7em;
         }
     </style>
     <title>Document</title>
@@ -42,31 +46,40 @@
             </div>
             <div class="col-6">
                 <div class="container w-75 p-5" style="font-size: 15px;">
-                    <h1 class="mb-4">Login</h1>
+                    <h1 class="mb-5">Login</h1>
                     <form action="{{ route('user.autenticate') }}" method="post">
                         @csrf
-                        <div class="@if($errors->any()){{'mb-0'}}@else{{'mb-3 '}}@endif">
+                        <div class="mb-3">
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="email" class="form-label">Email</label>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-9 d-flex justify-content-end align-items-center">
                                     @if($errors->hasAny('message'))
                                         <div class="container-fluid d-flex justify-content-end p-0 m-0">
                                             <span class="error-message">{{$errors->get('message')[0]}}</span>
                                         </div>
                                     @endif
+                                    @error('email')
+                                        <div class="text-danger invalid-message">
+                                            {{$message}}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                           <input type="email" class="form-control @error('email') is-invalid @enderror @if($errors->any()){{'is-invalid'}}@endif" id="email" aria-describedby="emailHelp" name="email">
                         </div>
                         <div class="mb-3">
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="password" class="form-label">Password</label>
                                 </div>
-                                <div class="col-8">
-                                    
+                                <div class="col-9 d-flex justify-content-end align-items-center">
+                                    @error('password')
+                                        <div class="text-danger invalid-message">
+                                            {{$message}}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                           <input type="password" class="form-control @error('password') is-invalid @enderror @if($errors->any()){{'is-invalid'}}@endif" id="password" name="password">

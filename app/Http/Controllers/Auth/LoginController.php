@@ -21,27 +21,26 @@ class LoginController extends Controller
         }
         if(Auth::attempt($credentials,$remember)){
             request()->session()->regenerate();
-            return redirect()->route('user.home');
+            return redirect()->route('welcome');
         }else {
             return back()->withErrors(['message' => 'Email atau Password Salah !']);
         }
     }
     public function userlogout(){
         Auth::logout();
-
+        //login dua user (admin dan user) pasti akan logout keduanya gara-gara ini fungsi
+        //makannya jangan rangkap jabatan ye
         request()->session()->invalidate();
-
         request()->session()->regenerateToken();
-
         return redirect()->route('user.login');
     }
 
     public function userRegister(){
-        // dd(request()->email);
         $credentials = request()->validate([
             'email'=>'required|unique:users|email',
             'name'=>'required',
-            'password'=>'required'
+            'password'=>'required',
+            'password_confirmation'=>'confirmed'
         ]);
         $user = User::create([
             'email'=>request()->email,
@@ -71,11 +70,10 @@ class LoginController extends Controller
     }
     public function adminlogout(){
         Auth::guard('admin')->logout();
-
+        //login dua user (admin dan user) pasti akan logout keduanya gara-gara ini fungsi
+        //makannya jangan rangkap jabatan ye
         request()->session()->invalidate();
-
         request()->session()->regenerateToken();
-
         return redirect()->route('admin.login');
     }
     public function adminRegister(){
@@ -85,7 +83,7 @@ class LoginController extends Controller
             'phone'=>'required',
             'password'=>'required'
         ]);
-        sAdmin::create([
+        Admin::create([
             'username'=>request()->username,
             'name'=>request()->name,
             'phone'=>request()->phone,
