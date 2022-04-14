@@ -7,81 +7,61 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Controllers\Controller;
 
-class ProductController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+class ProductController extends Controller{
+    public function index(){
+        $products = Product::all();
+        return view('dashboard.admin.tables.product',compact('product'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $credentials = request()->validate([
+            'product_name'=>'require|max:50|min:5',
+            'price'=>'require',
+            'description'=>'require|max:255',
+            'stock'=>'require',
+            'weight'=>'require'
+        ]);
+
+        Product::create([
+            'product_name'=>request()->product_name,
+            'price'=>request()->price,
+            'description'=>request()->description,
+            'stock'=>request()->stock,
+            'product_rate'=>0.0,
+            'weight'=>request()->weight
+        ]);
+        return redirect()->route('admin.resource.product.index')->with('message','Product Berhasil Dibuat !');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreProductRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProductRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function show(Product $product)
     {
-        //
+        return view('admin.resource.product.detail',compact('product'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
+    public function edit(Product $product){
+        return view('admin.resource.product.edit',compact('product'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateProductRequest  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateProductRequest $request, Product $product)
-    {
-        //
+    public function update(Product $product){
+        request()->validate([
+            'product_name'=>'require|max:50|min:5',
+            'price'=>'require',
+            'description'=>'require|max:255',
+            'stock'=>'require',
+            'weight'=>'require'
+        ]);
+        $product->product_name = request()->product_name;
+        $product->price = request()->price;
+        $product->description = request()->description;
+        $product->stock = request()->stock;
+        $product->weight = request()->weight;
+        $product->save();
+        return back()->with('message','Product '.$product->product_name.' Berhasil Diedit !');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Product $product)
-    {
-        //
+    public function destroy(Product $product){
+        $product->delete();
+        return redirect()->route('admin.resource.product.index')->with('message','Product Berhasil Dihapus !');
     }
 }

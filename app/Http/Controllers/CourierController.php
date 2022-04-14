@@ -15,7 +15,8 @@ class CourierController extends Controller
      */
     public function index()
     {
-        //
+        $couriers = Courier::all();
+        return view('dashboard.admin.tables.courier',compact('couriers'));
     }
 
     /**
@@ -25,7 +26,12 @@ class CourierController extends Controller
      */
     public function create()
     {
-        //
+        $credentials = request()->validate([
+            'courier'=>'require|max:50|min:5',
+        ]);
+
+        Product::create($credentials);
+        return redirect()->route('admin.resource.courier.index')->with('message','Kurir Berhasil Dibuat !');
     }
 
     /**
