@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Dashbaord;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Admin;
+use App\Models\Transaction;
+use App\Models\User;
+use App\Models\ProductReview;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Http\Controllers\Controller;
@@ -10,19 +13,58 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
-    private function getAllTableName(){
-        $tables = DB::select('SHOW TABLES');
-        return $tables;
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        $tables = getAllTableName();
-        return view('dashboard.admin.home',compact('tables'));
+        $new_user = User::where('created_at','>',date("Y-m-d", strtotime("-1 week")))
+            ->where('created_at','<',date("Y-m-d"))
+            ->count();
+
+        $new_transaction = Transaction::where('updated_at','>',date("Y-m-d", strtotime("-1 week")))
+            ->where('updated_at','<',date("Y-m-d"))
+            ->where('status','Dibayar')
+            ->count();
+
+        $revenue_this_week = DB::table('transaction_details')
+            ->join('transactions','transactions.id','=','transaction_details.id')
+            ->where('transactions.updated_at','>',date("Y-m-d", strtotime("-1 week")))
+            ->where('transactions.updated_at','<',date("Y-m-d"))
+            ->where('transactions.status','Dibayar')
+            ->count();
+
+        $total_rate = ProductReview::sum('rate');
+        $count_rate = ProductReview::all()->count();
+        $overall_review = 0;
+        if($total_rate!=0 and $count_rate!=0){
+            $overall_review =  $total_rate/$count_rate ;
+        }
+        
+
+        $past_new_user = User::where('created_at','>',date("Y-m-d", strtotime("-2 week")))
+            ->where('created_at','<',date("Y-m-d", strtotime("-1 week")))
+            ->count();
+
+        $past_new_transaction = Transaction::where('updated_at','>',date("Y-m-d", strtotime("-2 week")))
+            ->where('updated_at','<',date("Y-m-d", strtotime("-1 week")))
+            ->where('status','Dibayar')
+            ->count();
+
+        $revenue_past_week = DB::table('transaction_details')
+            ->join('transactions','transactions.id','=','transaction_details.id')
+            ->where('transactions.updated_at','>',date("Y-m-d", strtotime("-2 week")))
+            ->where('transactions.updated_at','<',date("Y-m-d", strtotime("-1 week")))
+            ->where('transactions.status','Dibayar')
+            ->count();
+
+        return view('dashboard.admin.home',compact(
+            'new_user',
+            'new_transaction',
+            'revenue_this_week',
+            'past_new_user',
+            'past_new_transaction',
+            'revenue_past_week',
+            'overall_review'
+        ));
     }
     /**
      * Show the form for creating a new resource.

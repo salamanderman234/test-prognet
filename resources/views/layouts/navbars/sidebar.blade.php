@@ -79,39 +79,58 @@
             <!-- Navigation -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.home') }}">
+                    <a class="nav-link {{ Request::is('admin/home*') ? 'active':''}}" href="{{ route('admin.home') }}">
                         <i class="ni ni-tv-2 text-primary"></i> {{ __('Dashboard') }}
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#tables" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="tables">
-                        <i class="fab fa-laravel" style="color: #f4645f;"></i>
-                        <span class="nav-link-text" style="color: #f4645f;">{{ __('Tables') }}</span>
+                    <a class="nav-link {{ Request::is('admin/table*') ? 'active':''}}" href="#tables" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="tables">
+                        <i class="ni ni-chart-bar-32 text-red"></i>
+                        <span class="nav-link-text">{{ __('Tables') }}</span>
                     </a>
-                    <div class="collapse show" id="tables">
+                    <div class="collapse" id="tables">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
+                                <a class="nav-link" href="{{route('admin.table.product.index')}}">
+                                    {{ __('Products') }}
+                                </a>
+                            </li>
+                        </li><li class="nav-item">
+                            <a class="nav-link" href="">
+                                {{ __('Product Categories') }}
+                            </a>
+                        </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="">
-                                    {{ __('User profile') }}
+                                    {{ __('Users') }}
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="">
-                                    {{ __('User Management') }}
+                                    {{ __('Admins') }}
+                                </a>
+                            </li><li class="nav-item">
+                                <a class="nav-link" href="">
+                                    {{ __('Couriers') }}
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="">
-                        <i class="ni ni-planet text-blue"></i> {{ __('Transaction') }}
+                <li class="nav-item ">
+                    <a class="nav-link {{ Request::is('admin/transaction*') ? 'active':''}}" href="">
+                        <i class="ni ni-chart-pie-35 text-blue"></i> {{ __('Transaction') }}
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="">
-                        <i class="ni ni-pin-3 text-orange"></i> {{ __('User') }}
+                    <a class="nav-link {{ Request::is('admin/chat*') ? 'active':''}}" href="">
+                        <i class="ni ni-chat-round text-green"></i> {{ __('Review & Reply') }}
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link {{ Request::is('admin/chat*') ? 'active':''}}" href="">
+                        <i class="ni ni-cart text-orange"></i> {{ __('Discount') }}
                     </a>
                 </li>
             </ul>

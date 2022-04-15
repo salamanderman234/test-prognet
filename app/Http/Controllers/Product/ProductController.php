@@ -6,13 +6,15 @@ use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
 
 class ProductController extends Controller{
     public function index(){
-        $products = Product::all();
-        return view('dashboard.admin.tables.product',compact('product'));
+        $products = Product::where('id','!=',0)->paginate(10)->withQueryString();
+        Paginator::useBootstrap();
+        return view('dashboard.admin.tables.product.index',compact('products'));
     }
-
+ 
     public function create()
     {
         $credentials = request()->validate([

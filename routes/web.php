@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\AdminController;
+use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Notification\UserNotificationsController;
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +46,16 @@ Route::prefix('/admin')->name('admin.')->group(function(){
         Route::post('/signup/save',[LoginController::class,'adminRegister'])->name('save_signup');        
     });
     Route::middleware(['auth:admin','back'])->group(function () {
-        Route::view('/home','dashboard.admin.home')->name('home');
-        Route::post('/logout',[LoginController::class,'adminLogout'])->name('logout'); 
+        Route::get('/home',[AdminController::class,'index'])->name('home');
+        Route::post('/logout',[LoginController::class,'adminLogout'])->name('logout');
+
+        //prefix untuk table
+        Route::prefix('/table')->name('table.')->group(function () {
+            Route::prefix('/product')->name('product.')->group(function () {
+                Route::get('/',[ProductController::class,'index'])->name('index');
+                Route::view('/create','dashboard.admin.tables.product.create')->name('create');
+            });
+        });
     });
 });
 

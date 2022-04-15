@@ -1,7 +1,18 @@
 <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
-    <div class="container-fluid">
+    <div class="container-fluid d-flex justify-content-between">
         <!-- Brand -->
-        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('admin.home') }}">Dashboard</a>
+        <div class="container w-50 m-0 p-0">
+            <a style="font-size: 1.2em" class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('admin.'.$main_link) }}">
+                {{$page_name}}
+            </a>
+            @forelse ($subs as $sub)
+                <a style="font-size: 1em" class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('admin.table.product.'.$sub) }}">
+                    {{' > '.$sub}}
+                </a>   
+            @empty
+                {{''}}
+            @endforelse
+        </div>
         <!-- User -->
         <ul class="navbar-nav align-items-center d-none d-md-flex">
             <li class="nav-item dropdown">
