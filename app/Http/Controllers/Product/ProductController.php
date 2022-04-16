@@ -10,19 +10,19 @@ use Illuminate\Pagination\Paginator;
 
 class ProductController extends Controller{
     public function index(){
-        $products = Product::where('id','!=',0)->paginate(10)->withQueryString();
+        $products = Product::where('id','!=',0)->paginate(5)->withQueryString();
         Paginator::useBootstrap();
         return view('dashboard.admin.tables.product.index',compact('products'));
     }
  
-    public function create()
+    public function store()
     {
         $credentials = request()->validate([
-            'product_name'=>'require|max:50|min:5',
-            'price'=>'require',
-            'description'=>'require|max:255',
-            'stock'=>'require',
-            'weight'=>'require'
+            'product_name'=>'required|max:50|min:5',
+            'price'=>'required|numeric',
+            'description'=>'required|max:255',
+            'stock'=>'required|numeric',
+            'weight'=>'required|numeric'
         ]);
 
         Product::create([
@@ -33,25 +33,25 @@ class ProductController extends Controller{
             'product_rate'=>0.0,
             'weight'=>request()->weight
         ]);
-        return redirect()->route('admin.resource.product.index')->with('message','Product Berhasil Dibuat !');
+        return redirect()->route('admin.table.product.index')->with('message','Product Berhasil Dibuat !');
     }
 
     public function show(Product $product)
     {
-        return view('admin.resource.product.detail',compact('product'));
+        return view('dashboard.admin.tables.product.detail',compact('product'));
     }
 
     public function edit(Product $product){
-        return view('admin.resource.product.edit',compact('product'));
+        return view('dashboard.admin.tables.product.edit',compact('product'));
     }
 
     public function update(Product $product){
         request()->validate([
-            'product_name'=>'require|max:50|min:5',
-            'price'=>'require',
-            'description'=>'require|max:255',
-            'stock'=>'require',
-            'weight'=>'require'
+            'product_name'=>'required|max:50|min:5',
+            'price'=>'required|numeric',
+            'description'=>'required|max:255',
+            'stock'=>'required|numeric',
+            'weight'=>'required|numeric'
         ]);
         $product->product_name = request()->product_name;
         $product->price = request()->price;
@@ -59,11 +59,14 @@ class ProductController extends Controller{
         $product->stock = request()->stock;
         $product->weight = request()->weight;
         $product->save();
-        return back()->with('message','Product '.$product->product_name.' Berhasil Diedit !');
+
+        return redirect()
+            ->route('admin.table.product.index')
+            ->with('message','Product '.$product->product_name.' Berhasil Diedit !');
     }
 
     public function destroy(Product $product){
         $product->delete();
-        return redirect()->route('admin.resource.product.index')->with('message','Product Berhasil Dihapus !');
+        return redirect()->route('admin.table.product.index')->with('message','Product Berhasil Dihapus !');
     }
 }

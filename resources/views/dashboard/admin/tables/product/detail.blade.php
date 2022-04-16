@@ -46,12 +46,12 @@
         <div class="main-content">
             @include('layouts.navbars.navbar',['page_name'=>'Products',
                         'main_link'=>'table.product.index',
-                        'subs'=>[['create',null]]])
+                        'subs'=>[['detail',$product->id]]])
             <div class="header bg-biru pb-8 pt-5 pt-md-7">
                 <div class="container-fluid">
                     <div class="header-body">
-                        <form action="{{route('admin.table.product.save')}}" method="POST" enctype="multipart/form-data">
-                            @csrf
+                        <form action="{{route('admin.table.product.save_edit',$product->id)}}" method="POST" enctype="multipart/form-data">
+                            
                             <div class="row d-flex ">
                                 <div class="col-4">
                                     <div class="container rounded bg-light p-3">
@@ -71,9 +71,9 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <input type="text" class="form-control @error('weight') is-invalid @enderror" id="weight" name="weight">
+                                            <input value="{{$product->weight}}" type="text" class="form-control" id="weight" name="weight" readonly>
                                         </div>
-                                        <div class="container p-0">
+                                        <div class="container p-0 mb-3">
                                             <div class="row px-3">
                                                 <div class="col-4 p-0">
                                                     <label for="description" class="form-label">Description</label>
@@ -86,14 +86,14 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" style="height: 48.2%; width:100%;"></textarea>
+                                            <textarea value class="form-control" name="description" id="description" style="height: 48.7%; width:100%;" readonly>{{$product->description}}</textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="container rounded bg-light p-3">
                                         <div class="mb-4 d-flex justify-content-center">
-                                            <h1>Product Form</h1>
+                                            <h1>Detail</h1>
                                         </div>
                                         <div class="mb-3">
                                             <div class="row px-3">
@@ -108,7 +108,7 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <input type="text" class="form-control @error('product_name') is-invalid @enderror" id="name" name="product_name">
+                                            <input value="{{$product->product_name}}" type="text" class="form-control" id="name" name="product_name" readonly>
                                         </div>
                                         <div class="mb-3">
                                             <div class="row px-3">
@@ -123,9 +123,9 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <input type="text" class="form-control @error('price') is-invalid @enderror" id="price" name="price">
+                                            <input value="{{$product->price}}" type="text" class="form-control" id="price" name="price" readonly>
                                         </div>
-                                        <div class="mb-3">
+                                        <div class="mb-5">
                                             <div class="row px-3">
                                                 <div class="col-4 p-0">
                                                     <label for="stock" class="form-label">Stock</label>
@@ -138,16 +138,15 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <input type="text" class="form-control @error('stock') is-invalid @enderror" id="stock" name="stock">
+                                            <input value="{{$product->stock}}" type="text" class="form-control" id="stock" name="stock" readonly>
                                         </div>
                                         <div class="d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                            <a role="button" href="{{route('admin.table.product.index')}}" class="btn btn-danger">Cancel</a>
+                                            <a role="button" href="{{route('admin.table.product.index')}}" class="btn btn-danger">Back</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-4">
-                                    <div style="min-height: 428px; max-height: 428px;" class="container rounded bg-light p-3 image-section" style="max-height: 428px;">
+                                    <div style="min-height: 460px; max-height: 428px;" class="container rounded bg-light p-3 image-section" style="max-height: 428px;">
                                         <div class="mb-4 d-flex justify-content-center">
                                             <h2>Thumbnail</h2>
                                         </div>

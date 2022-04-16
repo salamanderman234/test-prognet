@@ -6,8 +6,8 @@
                 {{$page_name}}
             </a>
             @forelse ($subs as $sub)
-                <a style="font-size: 1em" class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('admin.table.product.'.$sub) }}">
-                    {{' > '.$sub}}
+                <a style="font-size: 1em" class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('admin.table.product.'.$sub[0], $sub[1]) }}">
+                    {{' > '.$sub[0]}}
                 </a>   
             @empty
                 {{''}}
@@ -33,18 +33,6 @@
                     <a href="" class="dropdown-item">
                         <i class="ni ni-single-02"></i>
                         <span>My profile</span>
-                    </a>
-                    <a href="#" class="dropdown-item">
-                        <i class="ni ni-settings-gear-65"></i>
-                        <span>Settings</span>
-                    </a>
-                    <a href="#" class="dropdown-item">
-                        <i class="ni ni-calendar-grid-58"></i>
-                        <span>Activity</span>
-                    </a>
-                    <a href="#" class="dropdown-item">
-                        <i class="ni ni-support-16"></i>
-                        <span>Support</span>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a href="{{ route('admin.logout') }}" class="dropdown-item" onclick="event.preventDefault();

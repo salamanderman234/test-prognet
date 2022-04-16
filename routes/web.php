@@ -52,8 +52,13 @@ Route::prefix('/admin')->name('admin.')->group(function(){
         //prefix untuk table
         Route::prefix('/table')->name('table.')->group(function () {
             Route::prefix('/product')->name('product.')->group(function () {
-                Route::get('/',[ProductController::class,'index'])->name('index');
                 Route::view('/create','dashboard.admin.tables.product.create')->name('create');
+                Route::get('/',[ProductController::class,'index'])->name('index');
+                Route::get('/{product}/edit',[ProductController::class,'edit'])->name('edit');
+                Route::get('/{product}',[ProductController::class,'show'])->name('detail');
+                Route::post('/save',[ProductController::class,'store'])->name('save');
+                Route::post('/{product}/save',[ProductController::class,'update'])->name('save_edit');
+                Route::post('/{product}/delete',[ProductController::class,'destroy'])->name('delete');
             });
         });
     });
