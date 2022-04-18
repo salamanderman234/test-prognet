@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Notification\UserNotificationsController;
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,7 @@ Route::prefix('/admin')->name('admin.')->group(function(){
                 Route::post('/{product}/save',[ProductController::class,'update'])->name('save_edit');
                 Route::post('/{product}/delete',[ProductController::class,'destroy'])->name('delete');
             });
+            Route::resource('category', ProductCategoryController::class);
         });
     });
 });

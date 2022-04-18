@@ -5,13 +5,6 @@
             <a style="font-size: 1.2em" class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('admin.'.$main_link) }}">
                 {{$page_name}}
             </a>
-            @forelse ($subs as $sub)
-                <a style="font-size: 1em" class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('admin.table.product.'.$sub[0], $sub[1]) }}">
-                    {{' > '.$sub[0]}}
-                </a>   
-            @empty
-                {{''}}
-            @endforelse
         </div>
         <!-- User -->
         <ul class="navbar-nav align-items-center d-none d-md-flex">

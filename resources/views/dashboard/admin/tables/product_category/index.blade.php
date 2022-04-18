@@ -68,8 +68,8 @@
         </form>
         @include('layouts.navbars.sidebar')
         <div class="main-content h-100 bg-biru">
-            @include('layouts.navbars.navbar',['page_name'=>'Products',
-                        'main_link'=>'table.product.index',
+            @include('layouts.navbars.navbar',['page_name'=>'Category',
+                        'main_link'=>'table.category.index',
                         'subs'=>[]])
             <div class="header bg-biru pb-2 pt-5 pt-md-7 atas">
                 <div class="container-fluid">
@@ -88,7 +88,7 @@
                             </form>
                         </div>
                         <div class="col-4 py-0 d-flex align-items-center justify-content-end">
-                            <a href="{{route('admin.table.product.create')}}"
+                            <a href="{{route('admin.table.category.create')}}"
                             role="button"
                             class="btn btn-success btn-round d-flex align-items-center justify-content-center">
                                 <i class="ni ni-fat-add" style="font-size: 1.5em"></i> Add
@@ -101,36 +101,31 @@
                             <thead class="thead-dark border-0 text-center">
                               <tr class="rounded">
                                 <th scope="col">Id</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Stock</th>
-                                <th scope="col">Rate</th>
+                                <th scope="col">Category Name</th>
                                 <th scope="col">Action</th>
                               </tr>
                             </thead>
                             <tbody>
-                                @forelse ($products as $product)
-                                    <tr class="text-center table-row" data-href='{{route('admin.table.product.detail',$product->id)}}'>
-                                        <th class="clickable-row" scope="row">{{$product->id}}</th>
-                                        <td class="clickable-row">{{$product->product_name}}</td>
-                                        <td class="clickable-row">{{$product->price}}</td>
-                                        <td class="clickable-row">{{$product->stock}}</td>
-                                        <td class="clickable-row">{{$product->product_rate}}</td>
+                                @forelse ($categories as $category)
+                                    <tr class="text-center table-row">
+                                        <th class="clickable-row" scope="row">{{$category->id}}</th>
+                                        <td class="clickable-row">{{$category->category_name}}</td>
                                         <td>
-                                            <a href="{{route('admin.table.product.edit',$product->id)}}" role="button" type="button" rel="tooltip" class="btn btn-primary btn-icon btn-sm text-light" data-original-title="" title="">
+                                            <a href="{{route('admin.table.category.edit',$category)}}" role="button" type="button" rel="tooltip" class="btn btn-primary btn-icon btn-sm text-light" data-original-title="" title="">
                                               <i class="ni ni-settings p-1"></i>
                                             </a role="button">
                                             <a role="button" type="button" rel="tooltip" class="delete btn btn-danger btn-icon btn-sm text-light" data-original-title="" title="">
                                               <i class="ni ni-fat-remove p-1"></i>
                                             </a role="button">
-                                            <form class="delete-form" action="{{route('admin.table.product.delete',$product->id)}}" method="post" hidden>
+                                            <form class="delete-form" action="{{route('admin.table.category.destroy',$category)}}" method="post" hidden>
                                                 @csrf
+                                                @method('DELETE')
                                             </form>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" align="center">No Products Found</td>
+                                        <td colspan="6" align="center">No Data Found</td>
                                     </tr>
                                 @endforelse
                                 
@@ -139,7 +134,7 @@
 
                     </div>
                     <div class="d-flex justify-content-center" style="font-size: 1.1em">
-                        {{$products->links()}}
+                        {{$categories->links()}}
                     </div>
                 </div>
             </div>
@@ -153,9 +148,6 @@
         <script src="{{ asset('argon') }}/js/argon.js?v=1.0.0"></script>
         <script>
             $(document).ready(function($) {
-                $(".clickable-row").click(function() {
-                    window.location = $('.table-row').data("href");
-                });
                 $(".delete").click(function() {
                     $('.delete-form').submit()
                 });

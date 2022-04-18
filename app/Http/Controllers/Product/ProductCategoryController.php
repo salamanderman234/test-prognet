@@ -6,6 +6,8 @@ use App\Models\ProductCategory;
 use App\Http\Requests\StoreProductCategoryRequest;
 use App\Http\Requests\UpdateProductCategoryRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
+
 
 class ProductCategoryController extends Controller
 {
@@ -16,7 +18,9 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = ProductCategory::where('id','!=',0)->paginate(5)->withQueryString();
+        Paginator::useBootstrap();
+        return view('dashboard.admin.tables.product_category.index',compact('categories'));
     }
 
     /**
@@ -26,7 +30,7 @@ class ProductCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.admin.tables.product_category.create');
     }
 
     /**
@@ -37,7 +41,9 @@ class ProductCategoryController extends Controller
      */
     public function store(StoreProductCategoryRequest $request)
     {
-        //
+        $credentials = $request->validated();
+        ProductCategory::create($credentials);
+        return redirect()->route('admin.table.category.index')->with('message','Product Berhasil Dibuat !');
     }
 
     /**
@@ -48,7 +54,7 @@ class ProductCategoryController extends Controller
      */
     public function show(ProductCategory $productCategory)
     {
-        //
+        return view('dashboard.admin.tables.product_category.detail');
     }
 
     /**
@@ -57,9 +63,10 @@ class ProductCategoryController extends Controller
      * @param  \App\Models\ProductCategory  $productCategory
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProductCategory $productCategory)
+    public function edit(ProductCategory $category)
     {
-        //
+        $category = $category;
+        return view('dashboard.admin.tables.product_category.edit',compact('category'));
     }
 
     /**
@@ -69,9 +76,17 @@ class ProductCategoryController extends Controller
      * @param  \App\Models\ProductCategory  $productCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductCategoryRequest $request, ProductCategory $productCategory)
+    public function update( ProductCategory $category, UpdateProductCategoryRequest $request)
     {
-        //
+        if($category->category_name != $request->category_name){
+            $request->validate([
+                'category_name'=>'required|max:50|unique:product_categories',
+            ]);
+            $category->category_name = $request->category_name;
+            $category->save();
+        }
+        return redirect()->route('admin.table.category.index')->with('message','Edit Successfully');
+
     }
 
     /**
@@ -80,8 +95,9 @@ class ProductCategoryController extends Controller
      * @param  \App\Models\ProductCategory  $productCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProductCategory $productCategory)
+    public function destroy(ProductCategory $category)
     {
-        //
+        $category->delete();
+        return redirect()->route('admin.table.category.index')->with('message','Delete Successfully');
     }
 }

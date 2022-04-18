@@ -44,56 +44,19 @@
         </form>
         @include('layouts.navbars.sidebar')
         <div class="main-content">
-            @include('layouts.navbars.navbar',['page_name'=>'Products',
-                        'main_link'=>'table.product.index',
+            @include('layouts.navbars.navbar',['page_name'=>'Categories',
+                        'main_link'=>'table.category.index',
                         'subs'=>[['create',null]]])
             <div class="header bg-biru pb-8 pt-5 pt-md-7">
                 <div class="container-fluid">
                     <div class="header-body">
-                        <form action="{{route('admin.table.product.save')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('admin.table.category.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="row d-flex ">
+                            <div class="row d-flex justify-content-center">
                                 <div class="col-4">
                                     <div class="container rounded bg-light p-3">
                                         <div class="mb-4 d-flex justify-content-center">
-                                            <h2>Extra Information</h2>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="row px-3">
-                                                <div class="col-4 p-0">
-                                                    <label for="weight" class="form-label">Weight (g)</label>
-                                                </div>
-                                                <div class="col-8 p-0 d-flex justify-content-end align-items-center">
-                                                    @error('weight')
-                                                        <div class="text-danger" style="font-size: 0.7em">
-                                                            {{$message}}
-                                                        </div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <input type="text" class="form-control @error('weight') is-invalid @enderror" id="weight" name="weight">
-                                        </div>
-                                        <div class="container p-0">
-                                            <div class="row px-3">
-                                                <div class="col-4 p-0">
-                                                    <label for="description" class="form-label">Description</label>
-                                                </div>
-                                                <div class="col-8 p-0 d-flex justify-content-end align-items-center">
-                                                    @error('description')
-                                                        <div class="text-danger" style="font-size: 0.7em">
-                                                            {{$message}}
-                                                        </div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" style="height: 48.2%; width:100%;"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="container rounded bg-light p-3">
-                                        <div class="mb-4 d-flex justify-content-center">
-                                            <h1>Product Form</h1>
+                                            <h1>Category Form</h1>
                                         </div>
                                         <div class="mb-3">
                                             <div class="row px-3">
@@ -101,90 +64,30 @@
                                                     <label for="name" class="form-label">Name</label>
                                                 </div>
                                                 <div class="col-8 p-0 d-flex justify-content-end align-items-center">
-                                                    @error('product_name')
+                                                    @error('category_name')
                                                         <div class="text-danger" style="font-size: 0.7em">
                                                             {{$message}}
                                                         </div>
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <input type="text" class="form-control @error('product_name') is-invalid @enderror" id="name" name="product_name">
+                                            <input type="text" class="form-control @error('category_name') is-invalid @enderror" id="name" name="category_name">
                                         </div>
-                                        <div class="mb-3">
-                                            <div class="row px-3">
-                                                <div class="col-4 p-0">
-                                                    <label for="price" class="form-label">Price (Rp)</label>
-                                                </div>
-                                                <div class="col-8 p-0 d-flex justify-content-end align-items-center">
-                                                    @error('price')
-                                                        <div class="text-danger" style="font-size: 0.7em">
-                                                            {{$message}}
-                                                        </div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <input type="text" class="form-control @error('price') is-invalid @enderror" id="price" name="price">
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="row px-3">
-                                                <div class="col-4 p-0">
-                                                    <label for="stock" class="form-label">Stock</label>
-                                                </div>
-                                                <div class="col-8 p-0 d-flex justify-content-end align-items-center">
-                                                    @error('stock')
-                                                        <div class="text-danger" style="font-size: 0.7em">
-                                                            {{$message}}
-                                                        </div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <input type="text" class="form-control @error('stock') is-invalid @enderror" id="stock" name="stock">
-                                        </div>
+                                        
                                         <div class="d-flex justify-content-center">
                                             <button type="submit" class="btn btn-primary">Submit</button>
-                                            <a role="button" href="{{route('admin.table.product.index')}}" class="btn btn-danger">Cancel</a>
+                                            <a role="button" href="{{route('admin.table.category.index')}}" class="btn btn-danger">Cancel</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4">
-                                    <div style="min-height: 428px; max-height: 428px;" class="container rounded bg-light p-3 image-section" style="max-height: 428px;">
-                                        <div class="mb-4 d-flex justify-content-center">
-                                            <h2>Thumbnail</h2>
-                                        </div>
-                                        <div class="mb-1 w-100 d-flex justify-content-center">
-                                            <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
-                                        </div>
-                                        <hr class="mt-4 ">
-                                        <div class="mb-4 d-flex justify-content-center">
-                                            <h2>Product Images</h2>
-                                        </div>
-                                        <div class="mb-2 w-100 d-flex justify-content-center">
-                                            <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
-                                        </div>
-                                        <div class="mb-2 w-100 d-flex justify-content-center">
-                                            <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
-                                        </div>
-                                        <div class="mb-4 w-100 d-flex justify-content-center">
-                                            <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
-                                        </div>
-                                        <hr class="mt-1 ">
-                                        <div class="mb-4 d-flex justify-content-center">
-                                            <h2>Category</h2>
-                                        </div>
-                                        <div class="mb-1 w-100 d-flex justify-content-center align-items-center">
-                                           <span class="bg-dark p-1 rounded" style="font-size:0.7em">
-                                               <i class="ni ni-tag me-3"></i> Dessert
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                             </div>
                         </form>
                         
                     </div>
                 </div>
             </div>
-            <div class="container-fluid mt--8 bg-biru ">
+            <div class="container-fluid mt--3 bg-biru ">
                 @include('layouts.footers.footer')
             </div>
         </div>
