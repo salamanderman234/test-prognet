@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CourierController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\AdminController;
@@ -62,6 +63,7 @@ Route::prefix('/admin')->name('admin.')->group(function(){
                 Route::post('/{product}/delete',[ProductController::class,'destroy'])->name('delete');
             });
             Route::resource('category', ProductCategoryController::class);
+            Route::resource('courier', CourierController::class);
         });
     });
 });

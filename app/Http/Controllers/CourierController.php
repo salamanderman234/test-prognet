@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Courier;
 use App\Http\Requests\StoreCourierRequest;
 use App\Http\Requests\UpdateCourierRequest;
+use Illuminate\Pagination\Paginator;
 
 class CourierController extends Controller
 {
@@ -15,8 +16,9 @@ class CourierController extends Controller
      */
     public function index()
     {
-        $couriers = Courier::all();
-        return view('dashboard.admin.tables.courier',compact('couriers'));
+        $couriers = Courier::where('id','!=',0)->paginate(5)->withQueryString();
+        Paginator::useBootstrap();
+        return view('dashboard.admin.tables.courier.index',compact('couriers'));
     }
 
     /**
@@ -26,12 +28,7 @@ class CourierController extends Controller
      */
     public function create()
     {
-        $credentials = request()->validate([
-            'courier'=>'require|max:50|min:5',
-        ]);
-
-        Product::create($credentials);
-        return redirect()->route('admin.resource.courier.index')->with('message','Kurir Berhasil Dibuat !');
+        
     }
 
     /**
@@ -42,7 +39,9 @@ class CourierController extends Controller
      */
     public function store(StoreCourierRequest $request)
     {
-        //
+        $credentials = $request->validated();
+        Courier::create($credentials);
+        return redirect()->route('admin.table.courier.index')->with('message','Kurir Berhasil Dibuat !');
     }
 
     /**
@@ -64,7 +63,7 @@ class CourierController extends Controller
      */
     public function edit(Courier $courier)
     {
-        //
+        return view('dashboard.admin.tables.courier.edit',compact('courier'));
     }
 
     /**
@@ -76,7 +75,13 @@ class CourierController extends Controller
      */
     public function update(UpdateCourierRequest $request, Courier $courier)
     {
-        //
+        if($courier->courier != $request->courier){
+            $request->validated();
+            $courier->courier = $request->courier;
+            $courier->save();
+        }
+        return redirect()->route('admin.table.courier.index')->with('message','Edit Successfully');
+
     }
 
     /**
@@ -87,6 +92,7 @@ class CourierController extends Controller
      */
     public function destroy(Courier $courier)
     {
-        //
+        $courier->delete();
+        return redirect()->route('admin.table.courier.index')->with('message','Edit Successfully');
     }
 }

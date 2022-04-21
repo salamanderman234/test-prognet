@@ -99,18 +99,9 @@
                             <a class="nav-link" href="{{route('admin.table.category.index')}}">
                                 {{ __('Product Categories') }}
                             </a>
-                        </li>
+                        </li>   
                             <li class="nav-item">
-                                <a class="nav-link" href="">
-                                    {{ __('Users') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="">
-                                    {{ __('Admins') }}
-                                </a>
-                            </li><li class="nav-item">
-                                <a class="nav-link" href="">
+                                <a class="nav-link" href="{{ route('admin.table.courier.index') }}">
                                     {{ __('Couriers') }}
                                 </a>
                             </li>

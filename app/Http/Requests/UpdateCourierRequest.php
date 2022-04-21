@@ -13,7 +13,7 @@ class UpdateCourierRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::guard('admin')->check();
     }
 
     /**
@@ -24,7 +24,7 @@ class UpdateCourierRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'courier'=>'require|max:50|min:5|unique:couriers',
         ];
     }
 }

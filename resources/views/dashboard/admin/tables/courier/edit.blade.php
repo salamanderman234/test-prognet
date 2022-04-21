@@ -44,18 +44,20 @@
         </form>
         @include('layouts.navbars.sidebar')
         <div class="main-content">
-            @include('layouts.navbars.navbar',['page_name'=>'Categories',
-                        'main_link'=>'table.courier.index'])
+            @include('layouts.navbars.navbar',['page_name'=>'Products',
+                        'main_link'=>'table.product.index'])
             <div class="header bg-biru pb-8 pt-5 pt-md-7">
                 <div class="container-fluid">
                     <div class="header-body">
-                        <form action="{{route('admin.table.courier.store')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('admin.table.courier.update',$courier)}}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="row d-flex justify-content-center">
+                                
                                 <div class="col-4">
                                     <div class="container rounded bg-light p-3">
                                         <div class="mb-4 d-flex justify-content-center">
-                                            <h1>Courier Form</h1>
+                                            <h1>Edit Courier</h1>
                                         </div>
                                         <div class="mb-3">
                                             <div class="row px-3">
@@ -70,7 +72,7 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <input type="text" class="form-control @error('courier') is-invalid @enderror" id="name" name="courier">
+                                            <input value="{{$courier->courier_name}}" type="text" class="form-control @error('courier') is-invalid @enderror" id="name" name="courier">
                                         </div>
                                         
                                         <div class="d-flex justify-content-center">
@@ -86,8 +88,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="container-fluid mt--1 bg-biru ">
+            <div class="container-fluid mt--8 bg-biru ">
                 @include('layouts.footers.footer')
             </div>
         </div>
