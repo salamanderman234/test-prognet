@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Discount;
+namespace App\Http\Controllers\Resource;
 
 use App\Models\Discount;
 use App\Http\Requests\StoreDiscountRequest;

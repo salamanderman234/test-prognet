@@ -172,50 +172,23 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                 </div> <!-- /.section -->
             </div> <!-- /.row -->
             <div class="row">
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <img src="images/gallery-image-2.jpg" alt="">
-                        </div> <!-- /.product-thum -->
-                        <div class="product-content">
-                            <h5><a href="#">Name of Shirt</a></h5>
-                            <span class="price">$40.00</span>
-                        </div> <!-- /.product-content -->
-                    </div> <!-- /.product-item -->
-                </div> <!-- /.col-md-3 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <img src="images/gallery-image-3.jpg" alt="">
-                        </div> <!-- /.product-thum -->
-                        <div class="product-content">
-                            <h5><a href="#">Sport Shirt</a></h5>
-                            <span class="price">$40.00</span>
-                        </div> <!-- /.product-content -->
-                    </div> <!-- /.product-item -->
-                </div> <!-- /.col-md-3 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <img src="images/gallery-image-4.jpg" alt="">
-                        </div> <!-- /.product-thum -->
-                        <div class="product-content">
-                            <h5><a href="#">Elegant Shirt</a></h5>
-                            <span class="price">$60.00</span>
-                        </div> <!-- /.product-content -->
-                    </div> <!-- /.product-item -->
-                </div> <!-- /.col-md-3 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <img src="images/gallery-image-5.jpg" alt="">
-                        </div> <!-- /.product-thum -->
-                        <div class="product-content">
-                            <h5><a href="#">Another New Shirt</a></h5>
-                            <span class="price">$80.00</span>
-                        </div> <!-- /.product-content -->
-                    </div> <!-- /.product-item -->
-                </div> <!-- /.col-md-3 -->
+                @foreach ($new_products as $new_product)
+                    <div class="col-md-3 col-sm-6">
+                        <div class="product-item">
+                            <div class="product-thumb">
+                                @if ($new_product->thumbnail)
+                                    <img src="{{ asset("storage/".$new_product->thumbnail->image_name) }}" alt="">
+                                @else
+                                    <img src="images/gallery-image-2.jpg" alt="">
+                                @endif
+                            </div> <!-- /.product-thum -->
+                            <div class="product-content">
+                                <h5><a href="">{{ $new_product->product_name }}</a></h5>
+                                <span class="price">Rp.{{ $new_product->price }}</span>
+                            </div> <!-- /.product-content -->
+                        </div> <!-- /.producyyt-item -->
+                    </div> <!-- /.col-md-3 -->
+                @endforeach
             </div> <!-- /.row -->
         </div> <!-- /.container -->
     </div> <!-- /.content-section -->
@@ -223,54 +196,27 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
         <div class="container">
             <div class="row">
                 <div class="col-md-12 section-title">
-                    <h2>Best Seller</h2>
+                    <h2>Our Products</h2>
                 </div> <!-- /.section -->
             </div> <!-- /.row -->
             <div class="row">
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <img src="images/gallery-image-2.jpg" alt="">
-                        </div> <!-- /.product-thum -->
-                        <div class="product-content">
-                            <h5><a href="#">Name of Shirt</a></h5>
-                            <span class="price">$40.00</span>
-                        </div> <!-- /.product-content -->
-                    </div> <!-- /.product-item -->
-                </div> <!-- /.col-md-3 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <img src="images/gallery-image-3.jpg" alt="">
-                        </div> <!-- /.product-thum -->
-                        <div class="product-content">
-                            <h5><a href="#">Sport Shirt</a></h5>
-                            <span class="price">$40.00</span>
-                        </div> <!-- /.product-content -->
-                    </div> <!-- /.product-item -->
-                </div> <!-- /.col-md-3 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <img src="images/gallery-image-4.jpg" alt="">
-                        </div> <!-- /.product-thum -->
-                        <div class="product-content">
-                            <h5><a href="#">Elegant Shirt</a></h5>
-                            <span class="price">$60.00</span>
-                        </div> <!-- /.product-content -->
-                    </div> <!-- /.product-item -->
-                </div> <!-- /.col-md-3 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <img src="images/gallery-image-5.jpg" alt="">
-                        </div> <!-- /.product-thum -->
-                        <div class="product-content">
-                            <h5><a href="#">Another New Shirt</a></h5>
-                            <span class="price">$80.00</span>
-                        </div> <!-- /.product-content -->
-                    </div> <!-- /.product-item -->
-                </div> <!-- /.col-md-3 -->
+                @foreach ($another_products as $another_product)
+                    <div class="col-md-3 col-sm-6">
+                        <div class="product-item">
+                            <div class="product-thumb">
+                                @if ($another_product->thumbnail)
+                                    <img src="{{ asset("storage/".$another_product->thumbnail->image_name) }}" alt="">
+                                @else
+                                    <img src="images/gallery-image-2.jpg" alt="">
+                                @endif
+                            </div> <!-- /.product-thum -->
+                            <div class="product-content">
+                                <h5><a href="#">{{ $another_product->product_name }}</a></h5>
+                                <span class="price">Rp.{{ $another_product->price }}</span>
+                            </div> <!-- /.product-content -->
+                        </div> <!-- /.producyyt-item -->
+                    </div> <!-- /.col-md-3 -->
+                @endforeach
             </div> <!-- /.row -->
         </div> <!-- /.container -->
     </div> <!-- /.content-section -->

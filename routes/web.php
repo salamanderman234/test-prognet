@@ -2,12 +2,13 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CourierController;
+use App\Http\Controllers\Dashboard\HomeController;
+use App\Http\Controllers\Resource\CourierController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\AdminController;
-use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\Product\ProductCategoryController;
+use App\Http\Controllers\Resource\ProductController;
+use App\Http\Controllers\Resource\ProductCategoryController;
 use App\Http\Controllers\Notification\UserNotificationsController;
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +21,8 @@ use App\Http\Controllers\Notification\UserNotificationsController;
 |
 */
 Auth::routes(['verify'=> true]);
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome')->middleware(['back']);
+Route::get('/', [HomeController::class,"home"])->name('welcome')->middleware(['back']);
+Route::get('/product/{product}',[HomeController::class,"product_detail"])->name('home.product_detail')->middleware(['back']);
 
 Route::prefix('/')->name('user.')->group(function(){
     Route::middleware(['guest','back'])->group(function () {
@@ -54,7 +54,7 @@ Route::prefix('/admin')->name('admin.')->group(function(){
         //prefix untuk table
         Route::prefix('/table')->name('table.')->group(function () {
             Route::prefix('/product')->name('product.')->group(function () {
-                Route::view('/create','dashboard.admin.tables.product.create')->name('create');
+                Route::get('/create',[ProductController::class,'create'])->name('create');
                 Route::get('/',[ProductController::class,'index'])->name('index');
                 Route::get('/{product}/edit',[ProductController::class,'edit'])->name('edit');
                 Route::get('/{product}',[ProductController::class,'show'])->name('detail');

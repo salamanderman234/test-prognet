@@ -40,7 +40,6 @@ class LoginController extends Controller
             'email'=>'required|unique:users|email',
             'name'=>'required',
             'password'=>'required',
-            'password_confirmation'=>'confirmed'
         ]);
         $user = User::create([
             'email'=>request()->email,

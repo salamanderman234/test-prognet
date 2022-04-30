@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Resource;
 
 use App\Models\Courier;
 use App\Http\Requests\StoreCourierRequest;
 use App\Http\Requests\UpdateCourierRequest;
+use App\Http\Controllers\Controller;
 use Illuminate\Pagination\Paginator;
 
 class CourierController extends Controller
@@ -28,7 +29,7 @@ class CourierController extends Controller
      */
     public function create()
     {
-        
+        return view('dashboard.admin.tables.courier.create');
     }
 
     /**

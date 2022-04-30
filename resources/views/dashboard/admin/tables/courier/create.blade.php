@@ -44,19 +44,18 @@
         </form>
         @include('layouts.navbars.sidebar')
         <div class="main-content">
-            @include('layouts.navbars.navbar',['page_name'=>'Categories',
-                        'main_link'=>'table.category.index',
-                        'subs'=>[['create',null]]])
+            @include('layouts.navbars.navbar',['page_name'=>'Courier',
+                        'main_link'=>'table.courier.index'])
             <div class="header bg-biru pb-8 pt-5 pt-md-7">
                 <div class="container-fluid">
                     <div class="header-body">
-                        <form action="{{route('admin.table.category.store')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('admin.table.courier.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row d-flex justify-content-center">
                                 <div class="col-4">
                                     <div class="container rounded bg-light p-3">
                                         <div class="mb-4 d-flex justify-content-center">
-                                            <h1>Category Form</h1>
+                                            <h1>Courier Form</h1>
                                         </div>
                                         <div class="mb-3">
                                             <div class="row px-3">
@@ -64,19 +63,19 @@
                                                     <label for="name" class="form-label">Name</label>
                                                 </div>
                                                 <div class="col-8 p-0 d-flex justify-content-end align-items-center">
-                                                    @error('category_name')
+                                                    @error('courier')
                                                         <div class="text-danger" style="font-size: 0.7em">
                                                             {{$message}}
                                                         </div>
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <input type="text" class="form-control @error('category_name') is-invalid @enderror" id="name" name="category_name">
+                                            <input type="text" class="form-control @error('courier') is-invalid @enderror" id="name" name="courier">
                                         </div>
                                         
                                         <div class="d-flex justify-content-center">
                                             <button type="submit" class="btn btn-primary">Submit</button>
-                                            <a role="button" href="{{route('admin.table.category.index')}}" class="btn btn-danger">Cancel</a>
+                                            <a role="button" href="{{route('admin.table.courier.index')}}" class="btn btn-danger">Cancel</a>
                                         </div>
                                     </div>
                                 </div>

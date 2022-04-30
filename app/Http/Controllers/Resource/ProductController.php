@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace App\Http\Controllers\Resource;
 
 use App\Models\Product;
+use App\Models\ProductCategory;
+use App\Models\CategoryDetail;
+use App\Models\ProductImage;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Controllers\Controller;
@@ -14,7 +17,11 @@ class ProductController extends Controller{
         Paginator::useBootstrap();
         return view('dashboard.admin.tables.product.index',compact('products'));
     }
- 
+    
+    public function create(){
+        $categories = ProductCategory::all();
+        return view('dashboard.admin.tables.product.create',compact('categories'));
+    }
     public function store()
     {
         $credentials = request()->validate([
@@ -22,10 +29,10 @@ class ProductController extends Controller{
             'price'=>'required|numeric',
             'description'=>'required|max:255',
             'stock'=>'required|numeric',
-            'weight'=>'required|numeric'
+            'weight'=>'required|numeric',
+            'product_category'=>'required'
         ]);
-
-        Product::create([
+        $product = Product::create([
             'product_name'=>request()->product_name,
             'price'=>request()->price,
             'description'=>request()->description,
@@ -33,6 +40,19 @@ class ProductController extends Controller{
             'product_rate'=>0.0,
             'weight'=>request()->weight
         ]);
+        CategoryDetail::create([
+            'product_id'=>$product->id,
+            'category_id'=>request()->product_category
+        ]);
+        $path = "";
+        if(request()->hasFile('product_image')){
+            $destination_path = 'images/products';
+            $path = request()->file('product_image')->store($destination_path);
+            ProductImage::create([
+                'product_id'=>$product->id,
+                'image_name'=>$path
+            ]);
+        }
         return redirect()->route('admin.table.product.index')->with('message','Product Berhasil Dibuat !');
     }
 

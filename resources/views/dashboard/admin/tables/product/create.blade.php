@@ -149,33 +149,37 @@
                                 <div class="col-4">
                                     <div style="min-height: 428px; max-height: 428px;" class="container rounded bg-light p-3 image-section" style="max-height: 428px;">
                                         <div class="mb-4 d-flex justify-content-center">
-                                            <h2>Thumbnail</h2>
-                                        </div>
-                                        <div class="mb-1 w-100 d-flex justify-content-center">
-                                            <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
-                                        </div>
-                                        <hr class="mt-4 ">
-                                        <div class="mb-4 d-flex justify-content-center">
                                             <h2>Product Images</h2>
                                         </div>
-                                        <div class="mb-2 w-100 d-flex justify-content-center">
-                                            <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
+                                        <div class="mb-2 ">
+                                            <div class="row p-3">
+                                                <input name="product_image" type="file" class="form-control" accept="image/png, image/jpeg">
+                                            </div>
+                                            {{-- <div class="row p-0 d-flex justify-content-center ">
+                                                <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
+                                            </div> --}}
                                         </div>
-                                        <div class="mb-2 w-100 d-flex justify-content-center">
-                                            <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
-                                        </div>
-                                        <div class="mb-4 w-100 d-flex justify-content-center">
-                                            <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
-                                        </div>
+                                    
                                         <hr class="mt-1 ">
                                         <div class="mb-4 d-flex justify-content-center">
                                             <h2>Category</h2>
                                         </div>
                                         <div class="mb-1 w-100 d-flex justify-content-center align-items-center">
-                                           <span class="bg-dark p-1 rounded" style="font-size:0.7em">
-                                               <i class="ni ni-tag me-3"></i> Dessert
-                                            </span>
+                                           <select name="product_category" class="form-control @error('product_category') is-invalid @enderror">
+                                               @forelse ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>                   
+                                               @empty
+                                                    <option value="">Tidak ada category</option>                   
+
+                                               @endforelse
+                                           </select>
+
                                         </div>
+                                        @error('product_category')
+                                            <div class="text-danger" style="font-size: 0.7em">
+                                                {{$message}}
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
