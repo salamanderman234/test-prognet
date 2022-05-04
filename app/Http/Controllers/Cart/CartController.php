@@ -3,12 +3,30 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Models\Cart;
+use App\Models\Product;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
-use App\Http\Controllers\Controller;
 
 class CartController extends Controller
 {
+    public function add(Product $product){
+        $cart = Cart::where('user_id',Auth::user()->id)->where('product_id',$product->id)->where('status','Belum Chekcout')->get();
+        if(count($cart)>0){
+            $cart->first()->qty += request()->qty;
+            $cart->first()->save();
+        }else {
+            Cart::create([
+                'user_id'=>Auth::user()->id,
+                'product_id'=>$product->id,
+                'qty'=>request()->qty,
+                'status'=>'Belum Chekcout'
+            ]);
+        }
+        
+        return back()->with('message','Berhasil menambah ke keranjang !');
+    }
     /**
      * Display a listing of the resource.
      *

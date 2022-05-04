@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Resource;
 
 use App\Models\Product;
-use App\Models\ProductCategory;
-use App\Models\CategoryDetail;
+use Illuminate\Support\Str;
 use App\Models\ProductImage;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
+use App\Models\CategoryDetail;
+use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Pagination\Paginator;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
 class ProductController extends Controller{
     public function index(){
@@ -22,32 +23,20 @@ class ProductController extends Controller{
         $categories = ProductCategory::all();
         return view('dashboard.admin.tables.product.create',compact('categories'));
     }
-    public function store()
+    public function store(StoreProductRequest $request)
     {
-        $credentials = request()->validate([
-            'product_name'=>'required|max:50|min:5',
-            'price'=>'required|numeric',
-            'description'=>'required|max:255',
-            'stock'=>'required|numeric',
-            'weight'=>'required|numeric',
-            'product_category'=>'required'
-        ]);
-        $product = Product::create([
-            'product_name'=>request()->product_name,
-            'price'=>request()->price,
-            'description'=>request()->description,
-            'stock'=>request()->stock,
-            'product_rate'=>0.0,
-            'weight'=>request()->weight
-        ]);
+        $credentials = $request->validated();
+        $credentials['slug'] = Str::slug($request->product_name);
+        $credentials['product_rate'] = 0.0;
+        $product = Product::create($credentials);
         CategoryDetail::create([
             'product_id'=>$product->id,
-            'category_id'=>request()->product_category
+            'category_id'=>$request->product_category
         ]);
         $path = "";
         if(request()->hasFile('product_image')){
             $destination_path = 'images/products';
-            $path = request()->file('product_image')->store($destination_path);
+            $path = $request->file('product_image')->store($destination_path);
             ProductImage::create([
                 'product_id'=>$product->id,
                 'image_name'=>$path
@@ -65,19 +54,14 @@ class ProductController extends Controller{
         return view('dashboard.admin.tables.product.edit',compact('product'));
     }
 
-    public function update(Product $product){
-        request()->validate([
-            'product_name'=>'required|max:50|min:5',
-            'price'=>'required|numeric',
-            'description'=>'required|max:255',
-            'stock'=>'required|numeric',
-            'weight'=>'required|numeric'
-        ]);
-        $product->product_name = request()->product_name;
-        $product->price = request()->price;
-        $product->description = request()->description;
-        $product->stock = request()->stock;
-        $product->weight = request()->weight;
+    public function update(Product $product,UpdateProductRequest $request){
+        $request->validated();
+        $product->product_name = $request->product_name;
+        $product->price = $request->price;
+        $product->description = $request->description;
+        $product->stock = $request->stock;
+        $product->weight = $request->weight;
+        $product->slug = Str::slug($request->category_name);;
         $product->save();
 
         return redirect()

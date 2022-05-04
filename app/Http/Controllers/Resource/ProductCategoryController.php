@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Resource;
 
+use Illuminate\Support\Str;
 use App\Models\ProductCategory;
-use App\Http\Requests\StoreProductCategoryRequest;
-use App\Http\Requests\UpdateProductCategoryRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Pagination\Paginator;
+use App\Http\Requests\StoreProductCategoryRequest;
+use App\Http\Requests\UpdateProductCategoryRequest;
 
 
 class ProductCategoryController extends Controller
@@ -42,8 +43,9 @@ class ProductCategoryController extends Controller
     public function store(StoreProductCategoryRequest $request)
     {
         $credentials = $request->validated();
+        $credentials['slug'] = Str::slug($request->category_name);
         ProductCategory::create($credentials);
-        return redirect()->route('admin.table.category.index')->with('message','Product Berhasil Dibuat !');
+        return redirect()->route('admin.table.category.index')->with('message','Kategori Berhasil Dibuat !');
     }
 
     /**
@@ -79,10 +81,9 @@ class ProductCategoryController extends Controller
     public function update( ProductCategory $category, UpdateProductCategoryRequest $request)
     {
         if($category->category_name != $request->category_name){
-            $request->validate([
-                'category_name'=>'required|max:50|unique:product_categories',
-            ]);
+            $request->validated();
             $category->category_name = $request->category_name;
+            $category->slug = Str::slug($request->category_name);
             $category->save();
         }
         return redirect()->route('admin.table.category.index')->with('message','Edit Successfully');

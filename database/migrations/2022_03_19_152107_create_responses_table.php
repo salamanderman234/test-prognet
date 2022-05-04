@@ -15,10 +15,11 @@ class CreateResponsesTable extends Migration
     {
         Schema::create('responses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('review_id')->constrained('product_reviews');
-            $table->foreignId('admin_id')->constrained('admins');
+            $table->foreignId('review_id')->constrained('product_reviews')->onDelete('cascade');
+            $table->foreignId('admin_id')->constrained('admins')->onDelete('cascade');
             $table->string('content');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

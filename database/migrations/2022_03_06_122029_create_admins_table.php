@@ -21,6 +21,7 @@ class CreateAdminsTable extends Migration
             $table->string('profile_image')->nullable();
             $table->string('phone');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

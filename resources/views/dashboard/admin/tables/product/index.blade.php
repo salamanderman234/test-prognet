@@ -110,20 +110,20 @@
                             </thead>
                             <tbody>
                                 @forelse ($products as $product)
-                                    <tr class="text-center table-row" data-href='{{route('admin.table.product.detail',$product->id)}}'>
+                                    <tr class="text-center table-row" data-href='{{route('admin.table.product.show',$product)}}'>
                                         <th class="clickable-row" scope="row">{{$product->id}}</th>
                                         <td class="clickable-row">{{$product->product_name}}</td>
                                         <td class="clickable-row">{{$product->price}}</td>
                                         <td class="clickable-row">{{$product->stock}}</td>
                                         <td class="clickable-row">{{$product->product_rate}}</td>
                                         <td>
-                                            <a href="{{route('admin.table.product.edit',$product->id)}}" role="button" type="button" rel="tooltip" class="btn btn-primary btn-icon btn-sm text-light" data-original-title="" title="">
+                                            <a href="{{route('admin.table.product.edit',$product)}}" role="button" type="button" rel="tooltip" class="btn btn-primary btn-icon btn-sm text-light" data-original-title="" title="">
                                               <i class="ni ni-settings p-1"></i>
                                             </a role="button">
                                             <a role="button" type="button" rel="tooltip" class="delete btn btn-danger btn-icon btn-sm text-light" data-original-title="" title="">
                                               <i class="ni ni-fat-remove p-1"></i>
                                             </a role="button">
-                                            <form class="delete-form" action="{{route('admin.table.product.delete',$product->id)}}" method="post" hidden>
+                                            <form class="delete-form" action="{{route('admin.table.product.destroy',$product)}}" method="post" hidden>
                                                 @csrf
                                             </form>
                                         </td>

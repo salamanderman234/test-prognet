@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProductRequest extends FormRequest
@@ -13,7 +14,7 @@ class StoreProductRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::guard('admin')->check();
     }
 
     /**
@@ -24,7 +25,12 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'product_name'=>'required|max:50|min:5',
+            'price'=>'required|numeric',
+            'description'=>'required|max:255',
+            'stock'=>'required|numeric',
+            'weight'=>'required|numeric',
+            'product_category'=>'required'
         ];
     }
 }

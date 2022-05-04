@@ -21,7 +21,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
     <link rel="stylesheet" href="{{ asset('css/templatemo-misc.css')}}">
     <link rel="stylesheet" href="{{ asset('css/templatemo-style.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
@@ -81,9 +81,16 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
         }
         .product-image {
             background-repeat: no-repeat;
-            background-size: cover;
+            background-size: contain;
+            background-position: center;
             height: 400px;
             width: 100%;
+        }
+        .bg-grey {
+            background-color: #F3F4F5;
+        }
+        .cart:hover{
+            background-color:  #b2841a !important;
         }
     </style>
 </head>
@@ -97,13 +104,21 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill ms-2" viewBox="0 0 16 16">
                         <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
                     </svg>
+                    
+                    <a class="pb-1 ms-2" href="{{ route('search',['category'=>$category->category_name]) }}">{{ $category->category_name }}</a>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill ms-2" viewBox="0 0 16 16">
+                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                    </svg>
+                    <span class="pb-1 text-secondary ms-2">{{ $product->product_name }}</span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-8">
-                    <div class="border border-primary product-image" style="background-image: url('{{ asset('storage/'.$product->images->first()->image_name)  }}')">
+                    
+                    <div class="product-image width-auto border border-primary rounded" style="background-image: url('{{ asset('storage/'.$product->images->first()->image_name)  }}')">
                         {{-- <img width="300px" height="300px" src="" alt=""> --}}
                     </div> <!-- /.product-image -->
+                    
                     <div class="product-information">
                         <h2 class="mb-2 font-weight-bold">{{ $product->product_name }}</h2>
                         <div class="container p-0 mb-3">
@@ -119,37 +134,44 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                             <span>Price: Rp. {{ number_format($product->price) }}</span>
                             <span>Discount: 0%</span>
                         </p>
-                        <ul class="product-buttons">
-                            <li>
-                                <span>Quantity :</span>
-                                <input type="number" name="quantity">
-                            </li>
-                            <li class="d-inline">
-                                <a href="#" class="main-btn">Buy Now</a>
-                            </li>
-                            <li class="d-inline">
-                                <a href="#" class="main-btn btn-light border border-primary">Add to Cart</a>
-                            </li>
-                        </ul>
+                        <form id="add-cart" action="{{ route('user.cart.add',$product) }}" method="POST">    
+                            @csrf
+                            <ul class="product-buttons">
+                                <li>
+                                    <span>Quantity :</span>
+                                    <input style="width: 34%" type="number" name="qty" value="1">
+                                </li>
+                                <li class="d-inline">
+                                    <a href="#" class="main-btn buy">Buy Now</a>
+                                </li>
+                                <li class="d-inline">
+                                    <a href="#" class="main-btn cart" style="background-color: goldenrod" onclick="document.getElementById('add-cart').submit();">Add to Cart</a>
+                                </li>
+                                
+                            </ul>
+                        </form>
                     </div> <!-- /.product-information -->
                 </div> <!-- /.col-md-8 -->
                 <div class="col-md-4 col-sm-8">
                     <h5 class="font-weight-bold mb-4">Preview Product</h5>
-                    @forelse ($product_images as $product_image)
-                        @if ($loop->index > 0)
+                        @if (count($product_images)>1)
+                            @foreach ($product_images as $product_image)
+                                @if ($loop->index > 0)
+                                    <div class="product-item-2">
+                                        <div class="product-thumb">
+                                            <img src="{{ asset('storage/'.$product_image->image_name)  }}" alt="Product Image">
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        @else
                             <div class="product-item-2">
                                 <div class="product-thumb">
-                                    <img src="{{ asset('storage/'.$product_image->image_name)  }}" alt="Product Image">
+                                    <span>Tidak ada perview product !</span>
                                 </div>
                             </div>
                         @endif
-                    @empty
-                        <div class="product-item-2">
-                            <div class="product-thumb">
-                                <span>Tidak ada perview product !</span>
-                            </div>
-                        </div>
-                    @endforelse
+                            
                     {{-- <div class="product-item-2">
                         <div class="product-thumb">
                             <img src="images/featured/2.jpg" alt="Product Title">
@@ -176,7 +198,52 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
             </div> <!-- /.row -->
         </div> <!-- /.container -->
     </div> <!-- /.content-section -->
-
+    <div class="content-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 section-title">
+                    <h2>Reviews ({{ count($product_reviews) }})</h2>
+                </div> <!-- /.section -->
+            </div>
+            @forelse ($product_reviews as $product_review)
+                <div class="row mb-4">
+                    <div class="col-md-12 section-title">
+                        <div class="container rounded shadow w-100 p-4">
+                            <span class="mb-2">{{ $product_review->user }}</span>
+                            <div class="container p-0 mb-2">
+                                <span class="fa fa-star {{ $product_review->rate>=1 ? 'checked':'' }}"></span>
+                                <span class="fa fa-star {{ $product_review->rate>=2 ? 'checked':'' }}"></span>
+                                <span class="fa fa-star {{ $product_review->rate>=3 ? 'checked':'' }}"></span>
+                                <span class="fa fa-star {{ $product_review->rate>=4 ? 'checked':'' }}"></span>
+                                <span class="fa fa-star {{ $product_review->rate>=5 ? 'checked':'' }}"></span>
+                            </div>
+                            <p>
+                                {{ $product_review->content }}
+                            </p>
+                            @if ($product_review->responses)
+                                @foreach ($product_review->responses as $response)
+                                    <div class="rounded bg-grey ms-4 p-2">
+                                        <span>Admin response :</span>
+                                        <hr>
+                                        <p>
+                                            {{ $response->content }}
+                                        </p>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div> <!-- /.section -->
+                    
+                </div>
+            @empty
+            <div class="row">
+                <div class="col-md-12 section-title">
+                    <span>Tidak ada Review !</span>
+                </div>
+            </div>
+            @endforelse
+        </div>
+    </div>
     <div class="content-section">
         <div class="container">
             <div class="row">

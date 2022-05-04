@@ -22,11 +22,12 @@ class CreateTransactionsTable extends Migration
             $table->bigInteger('total');
             $table->bigInteger('shipping_cost');
             $table->bigInteger('sub_total');
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('courier_id')->constrained('couriers');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('courier_id')->constrained('couriers')->onDelete('cascade');
             $table->string('proof_of_payment');
             $table->enum('status',['Dibayar','Belum Dibayar','Dibatalkan','Gagal']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

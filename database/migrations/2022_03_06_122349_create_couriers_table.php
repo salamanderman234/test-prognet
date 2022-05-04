@@ -17,6 +17,7 @@ class CreateCouriersTable extends Migration
             $table->id();
             $table->string('courier');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

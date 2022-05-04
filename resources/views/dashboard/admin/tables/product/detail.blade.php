@@ -50,7 +50,7 @@
             <div class="header bg-biru pb-8 pt-5 pt-md-7">
                 <div class="container-fluid">
                     <div class="header-body">
-                        <form action="{{route('admin.table.product.save_edit',$product->id)}}" method="POST" enctype="multipart/form-data">
+                        <form action="//" method="POST" enctype="multipart/form-data">
                             
                             <div class="row d-flex ">
                                 <div class="col-4">

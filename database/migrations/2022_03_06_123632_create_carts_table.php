@@ -15,11 +15,12 @@ class CreateCartsTable extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('product_id')->constrained('products');
-            $table->integer('qty');
-            $table->enum('status',['Belum Chekcout','Checkout']);
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->integer('qty')->default(1);
+            $table->enum('status',['Belum Checkcout','Checkout'])->default('Belum Checkout');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
