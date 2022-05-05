@@ -47,23 +47,39 @@ class ProductController extends Controller{
 
     public function show(Product $product)
     {
-        return view('dashboard.admin.tables.product.detail',compact('product'));
+        $product_images = $product->images;
+        $product_categories = $product->categories;
+        return view('dashboard.admin.tables.product.detail',compact('product_categories','product','product_images'));
     }
 
     public function edit(Product $product){
-        return view('dashboard.admin.tables.product.edit',compact('product'));
+        $product_images = $product->images;
+        $product_categories = $product->categories;
+        $categories = ProductCategory::all();
+        return view('dashboard.admin.tables.product.edit',compact('product','product_images','product_categories','categories'));
     }
 
     public function update(Product $product,UpdateProductRequest $request){
+           
         $request->validated();
         $product->product_name = $request->product_name;
         $product->price = $request->price;
         $product->description = $request->description;
         $product->stock = $request->stock;
         $product->weight = $request->weight;
-        $product->slug = Str::slug($request->category_name);;
-        $product->save();
+        $product->slug = Str::slug($request->product_name);
 
+        if($request->has('thumbnail')){
+            
+            $destination_path = 'images/products';
+            $path = $request->file('thumbnail')->store($destination_path);
+            $product_thumbnail = $product->images->first();
+            $product_thumbnail->image_name = $path;
+            $product_thumbnail->save();
+        }
+
+        $product->save();
+        
         return redirect()
             ->route('admin.table.product.index')
             ->with('message','Product '.$product->product_name.' Berhasil Diedit !');

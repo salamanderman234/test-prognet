@@ -92,7 +92,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                 </div> <!-- /.section -->
             </div> <!-- /.row -->
             <div class="row">
-                @foreach ($new_products as $new_product)
+                @forelse ($new_products as $new_product)
                     <div class="col-md-3 col-sm-6">
                         <div class="product-item">
                             <div class="product-thumb">
@@ -103,13 +103,21 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                                 @endif
                             </div> <!-- /.product-thum -->
                             <div class="product-content">
-                                <h5><a href="{{ route('home.product_detail',['category'=>$new_product->category,'product'=>$new_product]) }}">{{ $new_product->product_name }}</a></h5>
-                                <a href="{{ route('search',['category'=>$new_product->category->category_name]) }}" class="category">{{ $new_product->category->category_name }}</a>
+                                <h5><a href="{{ route('home.product_detail',['category'=>$new_product->categories->first(),'product'=>$new_product]) }}">{{ $new_product->product_name }}</a></h5>
+                                @foreach ($new_product->categories as $category)
+                                    {{ $loop->index>0 ? ",":'' }}
+                                    <a href="{{ route('search',['keyword'=>$category->category_name]) }}" class="category">{{ $category->category_name }}</a>
+                                @endforeach
+                                {{-- <a href="{{ route('search',['keyword'=>$new_product->category->category_name]) }}" class="category">{{ $new_product->category->category_name }}</a> --}}
                                 <span class="price">Rp.{{ number_format($new_product->price) }}</span>
                             </div> <!-- /.product-content -->
                         </div> <!-- /.producyyt-item -->
                     </div> <!-- /.col-md-3 -->
-                @endforeach
+                @empty
+                    <div class="col-md-3 col-sm-6">
+                        <span>Tidak ada produk yang dapat ditampilkan</span>    
+                    </div> <!-- /.col-md-3 -->
+                @endforelse
             </div> <!-- /.row -->
         </div> <!-- /.container -->
     </div> <!-- /.content-section -->
@@ -121,7 +129,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                 </div> <!-- /.section -->
             </div> <!-- /.row -->
             <div class="row">
-                @foreach ($another_products as $another_product)
+                @forelse ($another_products as $another_product)
                     <div class="col-md-3 col-sm-6">
                         <div class="product-item">
                             <div class="product-thumb">
@@ -132,13 +140,20 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                                 @endif
                             </div> <!-- /.product-thum -->
                            <div class="product-content">
-                                <h5><a href="{{ route('home.product_detail',['category'=>$another_product->category,'product'=>$another_product]) }}">{{ $another_product->product_name }}</a></h5>
-                                <a href="{{ route('search',['category'=>$another_product->category->category_name]) }}" class="category">{{ $another_product->category->category_name }}</a>  
+                                <h5><a href="{{ route('home.product_detail',['category'=>$another_product->categories->first(),'product'=>$another_product]) }}">{{ $another_product->product_name }}</a></h5>
+                                @foreach ($another_product->categories as $category)
+                                    {{ $loop->index>0 ? ",":'' }}
+                                    <a href="{{ route('search',['keyword'=>$category->category_name]) }}" class="category">{{ $category->category_name }}</a>
+                                @endforeach
                                 <span class="price">Rp.{{ number_format($another_product->price) }}</span>
                             </div> <!-- /.product-content -->
                         </div> <!-- /.producyyt-item -->
                     </div> <!-- /.col-md-3 -->
-                @endforeach
+                @empty
+                    <div class="col-md-3 col-sm-6">
+                        <span>Tidak ada produk yang dapat ditampilkan</span>    
+                    </div> <!-- /.col-md-3 -->
+                @endforelse
             </div> <!-- /.row -->
         </div> <!-- /.container -->
     </div> <!-- /.content-section -->

@@ -127,8 +127,12 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                                 @endif
                             </div> <!-- /.product-thum -->
                             <div class="product-content">
-                                <h5><a href="{{ route('home.product_detail',['category'=>$product->category,'product'=>$product]) }}">{{ $product->product_name }}</a></h5>
-                                <a href="{{ route('search',['category'=>$product->category->category_name]) }}" class="category">{{ $product->category->category_name }}</a>
+                                <h5><a href="{{ route('home.product_detail',['category'=>$product->categories->first(),'product'=>$product]) }}">{{ $product->product_name }}</a></h5>
+                                @foreach ($product->categories as $category)
+                                    {{ $loop->index>0 ? ",":'' }}
+                                    <a href="{{ route('search',['keyword'=>$category->category_name]) }}" class="category">{{ $category->category_name }}</a>
+                                @endforeach
+                                {{-- <a href="{{ route('search',['category'=>$product->category->category_name]) }}" class="category">{{ $product->category->category_name }}</a> --}}
                                 <span class="price">Rp. {{ number_format($product->price) }}</span>
                             </div> <!-- /.product-content -->
                         </div> <!-- /.producyyt-item -->

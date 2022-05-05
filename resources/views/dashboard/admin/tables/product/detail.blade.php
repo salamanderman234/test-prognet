@@ -151,29 +151,39 @@
                                             <h2>Thumbnail</h2>
                                         </div>
                                         <div class="mb-1 w-100 d-flex justify-content-center">
-                                            <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
+                                            @if (count($product_images)>=1)
+                                                <img src="{{ asset("storage/".$product_images[0]->image_name) }}" class="img-thumbnail w-50" alt="...">      
+                                            @else
+                                                <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">   
+                                            @endif
                                         </div>
                                         <hr class="mt-4 ">
                                         <div class="mb-4 d-flex justify-content-center">
                                             <h2>Product Images</h2>
                                         </div>
-                                        <div class="mb-2 w-100 d-flex justify-content-center">
-                                            <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
-                                        </div>
-                                        <div class="mb-2 w-100 d-flex justify-content-center">
-                                            <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
-                                        </div>
-                                        <div class="mb-4 w-100 d-flex justify-content-center">
-                                            <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">
-                                        </div>
+                                        @forelse ($product_images as $product_image)
+                                            @if ($loop->index > 0)
+                                                <div class="mb-2 w-100 d-flex justify-content-center">
+                                                    <img src="{{ asset("storage/".$product_image->image_name) }}" class="img-thumbnail w-50" alt="...">
+                                                </div>
+                                            @endif
+                                        @empty
+                                            <div class="mb-2 w-100 d-flex justify-content-center">
+                                                <span>Tidak ada gambar yang dapat ditampilkan</span>
+                                            </div>
+                                        @endforelse
                                         <hr class="mt-1 ">
                                         <div class="mb-4 d-flex justify-content-center">
                                             <h2>Category</h2>
                                         </div>
                                         <div class="mb-1 w-100 d-flex justify-content-center align-items-center">
-                                           <span class="bg-dark p-1 rounded" style="font-size:0.7em">
-                                               <i class="ni ni-tag me-3"></i> Dessert
-                                            </span>
+                                           @forelse ($product_categories as $product_category)
+                                                <span class="bg-dark p-2 rounded text-white">
+                                                    <i class="ni ni-tag me-3"></i> {{ $product_category->category_name }}
+                                                </span>
+                                           @empty
+                                               <span>Tidak ada category</span>
+                                           @endforelse
                                         </div>
                                     </div>
                                 </div>

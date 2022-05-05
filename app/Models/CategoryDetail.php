@@ -9,5 +9,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CategoryDetail extends Model
 {
     protected $guarded = ['id'];
-    use HasFactory,SoftDeletes;
+    use HasFactory;
 }

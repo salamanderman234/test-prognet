@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CategoryDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Cart\CartController;
@@ -9,6 +10,8 @@ use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Resource\CourierController;
 use App\Http\Controllers\Resource\ProductController;
+use App\Http\Controllers\Resource\ProductImageController;
+use App\Http\Controllers\Resource\CategoryDetailController;
 use App\Http\Controllers\Resource\ProductCategoryController;
 use App\Http\Controllers\Notification\UserNotificationsController;
 /*
@@ -63,6 +66,11 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::resource('category', ProductCategoryController::class);
             Route::resource('courier', CourierController::class);
         });
+        Route::post('/product/image/{productImage}/delete',[ProductImageController::class,'destroy'])->name('product_image.delete');
+        Route::post('/product/image/save',[ProductImageController::class,'upload'])->name('product_image.upload');
+        Route::post('/product/product_category/save',[CategoryDetailController::class,'change'])->name('product_category.change');
+        Route::post('/product/product_category/delete',[CategoryDetailController::class,'remove'])->name('product_category.remove');
+        Route::post('/product/product_category/add',[CategoryDetailController::class,'add'])->name('product_category.add');
     });
 });
 

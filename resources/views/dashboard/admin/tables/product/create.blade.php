@@ -153,7 +153,7 @@
                                         </div>
                                         <div class="mb-2 ">
                                             <div class="row p-3">
-                                                <input name="product_image" type="file" class="form-control" accept="image/png, image/jpeg">
+                                                <input name="product_image" type="file" class="form-control" accept="image/png, image/jpeg, image/webp">
                                             </div>
                                             {{-- <div class="row p-0 d-flex justify-content-center ">
                                                 <img src="{{ asset('images/gallery-image-2.jpg')}}" class="img-thumbnail w-50" alt="...">

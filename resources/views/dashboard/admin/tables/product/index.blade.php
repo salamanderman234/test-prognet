@@ -125,6 +125,7 @@
                                             </a role="button">
                                             <form class="delete-form" action="{{route('admin.table.product.destroy',$product)}}" method="post" hidden>
                                                 @csrf
+                                                @method('DELETE')
                                             </form>
                                         </td>
                                     </tr>

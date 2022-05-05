@@ -18,7 +18,7 @@ class CreateCartsTable extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->integer('qty')->default(1);
-            $table->enum('status',['Belum Checkcout','Checkout'])->default('Belum Checkout');
+            $table->enum('status',['Belum Checkout','Checkout'])->default('Belum Checkout');
             $table->timestamps();
             $table->softDeletes();
         });

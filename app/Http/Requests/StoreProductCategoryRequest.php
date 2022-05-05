@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProductCategoryRequest extends FormRequest
@@ -25,7 +26,7 @@ class StoreProductCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_name'=>'required|max:50|unique:product_categories',
+            'category_name'=>['max:50','required', Rule::unique('product_categories')->whereNull('deleted_at')]
         ];
     }
 }

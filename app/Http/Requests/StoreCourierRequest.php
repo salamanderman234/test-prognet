@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,8 +25,8 @@ class StoreCourierRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'courier'=>'require|max:50|min:5|unique:couriers',  
+        return [ 
+            'courier'=>['required','max:50','min:5',Rule::unique('couriers')->whereNull('deleted_at')]
         ];
     }
 }

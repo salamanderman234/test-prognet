@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Admin;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -37,7 +38,7 @@ class LoginController extends Controller
 
     public function userRegister(){
         $credentials = request()->validate([
-            'email'=>'required|unique:users|email',
+            'email'=>['required',Rule::unique('users')->whereNull('deleted_at'),'min:4','max:20'],
             'name'=>'required',
             'password'=>'required',
         ]);
@@ -77,7 +78,7 @@ class LoginController extends Controller
     }
     public function adminRegister(){
         $credentials = request()->validate([
-            'username'=>'required|unique:admins|min:5|max:10',
+            'username'=>['required',Rule::unique('admins')->whereNull('deleted_at'),'min:5','max:10'],
             'name'=>'required',
             'phone'=>'required',
             'password'=>'required'

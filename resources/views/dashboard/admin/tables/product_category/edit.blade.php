@@ -53,7 +53,6 @@
                             @csrf
                             @method('PUT')
                             <div class="row d-flex justify-content-center">
-                                
                                 <div class="col-4">
                                     <div class="container rounded bg-light p-3">
                                         <div class="mb-4 d-flex justify-content-center">

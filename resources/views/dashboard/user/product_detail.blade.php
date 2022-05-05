@@ -92,6 +92,12 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
         .cart:hover{
             background-color:  #b2841a !important;
         }
+        .image-preview {
+            object-fit: contain;
+            width: 100%;
+            max-height: 200px;
+            
+        }
     </style>
 </head>
 <body>
@@ -105,7 +111,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                         <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
                     </svg>
                     
-                    <a class="pb-1 ms-2" href="{{ route('search',['category'=>$category->category_name]) }}">{{ $category->category_name }}</a>
+                    <a class="pb-1 ms-2" href="{{ route('search',['keyword'=>$category->category_name]) }}">{{ $category->category_name }}</a>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill ms-2" viewBox="0 0 16 16">
                         <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
                     </svg>
@@ -115,7 +121,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
             <div class="row">
                 <div class="col-md-8">
                     
-                    <div class="product-image width-auto border border-primary rounded" style="background-image: url('{{ asset('storage/'.$product->images->first()->image_name)  }}')">
+                    <div class="product-image width-auto border border-primary rounded" style="background-image: url('{{ asset('storage/'.$product_images->last()->image_name)  }}')">
                         {{-- <img width="300px" height="300px" src="" alt=""> --}}
                     </div> <!-- /.product-image -->
                     
@@ -130,6 +136,27 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                             <span>{{ $product->product_rate }}</span>
                         </div>
                         <p class="text-justify">{{ $product->description }}</p>
+                        <div class="container p-0 w-100">
+                            <div class="row p-0">
+                                <div class="col-2">
+                                    <span class="text-primary fw-bold">Stock </span>
+                                </div>
+                                :
+                                <div class="col-9">
+                                    <span> {{ $product->stock }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="row p-0 mt-2">
+                                <div class="col-2">
+                                    <span class="text-primary fw-bold">Weight </span>
+                                </div>
+                                :
+                                <div class="col-9">
+                                    <span> {{ $product->weight }} gram</span>
+                                </div>
+                            </div>
+                        </div>
                         <p class="product-infos">
                             <span>Price: Rp. {{ number_format($product->price) }}</span>
                             <span>Discount: 0%</span>
@@ -153,13 +180,13 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                     </div> <!-- /.product-information -->
                 </div> <!-- /.col-md-8 -->
                 <div class="col-md-4 col-sm-8">
-                    <h5 class="font-weight-bold mb-4">Preview Product</h5>
+                    <h5 class="fw-bold mb-5 text-center">Preview Product</h5>
                         @if (count($product_images)>1)
                             @foreach ($product_images as $product_image)
-                                @if ($loop->index > 0)
+                                @if ($loop->index < count($product_images)-1)
                                     <div class="product-item-2">
                                         <div class="product-thumb">
-                                            <img src="{{ asset('storage/'.$product_image->image_name)  }}" alt="Product Image">
+                                            <img class="image-preview" src="{{ asset('storage/'.$product_image->image_name)  }}" alt="Product Image">
                                         </div>
                                     </div>
                                 @endif

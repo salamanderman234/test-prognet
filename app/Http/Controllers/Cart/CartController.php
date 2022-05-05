@@ -12,7 +12,7 @@ use App\Http\Requests\UpdateCartRequest;
 class CartController extends Controller
 {
     public function add(Product $product){
-        $cart = Cart::where('user_id',Auth::user()->id)->where('product_id',$product->id)->where('status','Belum Chekcout')->get();
+        $cart = Cart::where('user_id',Auth::user()->id)->where('product_id',$product->id)->where('status','Belum Checkout')->get();
         if(count($cart)>0){
             $cart->first()->qty += request()->qty;
             $cart->first()->save();
@@ -21,7 +21,6 @@ class CartController extends Controller
                 'user_id'=>Auth::user()->id,
                 'product_id'=>$product->id,
                 'qty'=>request()->qty,
-                'status'=>'Belum Chekcout'
             ]);
         }
         

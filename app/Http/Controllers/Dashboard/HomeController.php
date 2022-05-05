@@ -18,11 +18,9 @@ class HomeController extends Controller
         
         foreach($another_products as $another_product){
             $another_product->thumbnail = $another_product
-                                            ->images()
-                                            ->get()
+                                            ->images
                                             ->first();
-            $another_product->category = $another_product->categories->first(); 
-                                                   
+            $another_product->categories = $another_product->categories;                                     
         } 
         $new_products = Product::orderBy('id','desc')
             ->take(4)
@@ -30,10 +28,9 @@ class HomeController extends Controller
         
         foreach($new_products as $new_product){
             $new_product->thumbnail = $new_product
-                                        ->images()
-                                        ->get()
+                                        ->images
                                         ->first();  
-            $new_product->category = $new_product->categories->first();                                        
+            $new_product->categories = $new_product->categories;                                        
         }
         return view('welcome',compact('new_products','another_products'));
     }
@@ -50,27 +47,25 @@ class HomeController extends Controller
     
     public function search(){
         $slug = "";
-        if(request()->has('category')){
-            $products = ProductCategory::where('category_name',request()->category)->get()->first()->products;
-            foreach($products as $product){
-                $product->thumbnail = $product
-                                    ->images()
-                                    ->get()
-                                    ->first();  
-                $product->category = $product->categories->first();                                        
+        if(request()->has('keyword')){
+            $category = ProductCategory::where('category_name','LIKE','%'.request()->keyword.'%')->get();
+            if(count($category)>0){
+                $products = $category[0]->products;
+            }else {
+                $products = Product::where('product_name','LIKE','%'.request()->keyword.'%')->get();
             }
-            $slug = request()->category;
-        }else {
-            $products = Product::where('product_name','LIKE','%'.request()->keyword.'%')->get();
             foreach($products as $product){
                 $product->thumbnail = $product
                                     ->images()
                                     ->get()
                                     ->first();  
-                $product->category = $product->categories->first();                                        
+                $product->category = $product->categories;                                        
             }
             $slug = request()->keyword;
+        }else {
+            return back();
         }
+        
 
         return view('dashboard.user.search',compact('slug','products'));
     }
