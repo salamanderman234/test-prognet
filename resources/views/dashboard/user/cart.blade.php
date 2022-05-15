@@ -96,7 +96,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 </head>
 <body>
     @include('layouts.navbars.user_navbar')
-    <form id="purchaseForm" action="/" method="POST">
+    <form id="purchaseForm" action="{{ route('user.purchase') }}" method="POST">
         @csrf
         <input id="items" type="text" name="items" hidden>
     </form>

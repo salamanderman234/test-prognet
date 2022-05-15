@@ -49,7 +49,7 @@
             <div class="header bg-biru pb-8 pt-5 pt-md-7">
                 <div class="container-fluid">
                     <div class="header-body">
-                        <form action="{{route('admin.review.reply.save',$review)}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('admin.review.reply.edit.save',$review)}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row d-flex justify-content-center">
                                 <div class="col-4">
@@ -70,11 +70,11 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <textarea class="form-control @error('content') is-invalid @enderror" name="content" cols="30" rows="10"></textarea>
+                                            <textarea class="form-control @error('content') is-invalid @enderror" name="content" cols="30" rows="10">{{ $response->content }}</textarea>
                                             
                                         </div>
                                         <div class="d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                            <button type="submit" class="btn btn-primary">Edit</button>
                                             <a role="button" href="{{route('admin.review.index')}}" class="btn btn-danger">Cancel</a>
                                         </div>
                                     </div>

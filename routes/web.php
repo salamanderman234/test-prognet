@@ -43,6 +43,7 @@ Route::prefix('/')->name('user.')->group(function(){
         Route::post('/autenticate',[LoginController::class,'userLogin'])->name('autenticate');
         Route::post('/signup/save',[LoginController::class,'userRegister'])->name('save_signup');        
     });
+
     Route::middleware(['auth','back','verified'])->group(function () {
         Route::get('/profile',[UserController::class,'home'])->name('profile');
         Route::get('/notifications',[UserNotificationsController::class,'show'])->name('notifications');
@@ -64,6 +65,8 @@ Route::prefix('/')->name('user.')->group(function(){
         Route::get('/reviews',[HomeController::class,'reviews'])->name('reviews');
 
         Route::post('/notification/read',[UserNotification::class,'update'])->name('notification.read');
+
+        Route::post('/purchase',[TransactionController::class,'purchase'])->name('purchase');
     });
     Route::post('/logout',[LoginController::class,'userLogout'])->name('logout')->middleware(['auth','back']); 
 
@@ -87,12 +90,19 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::resource('courier', CourierController::class);
         });
 
-        Route::prefix('/reviews')->name('review.')->group(function(){
+        Route::prefix('/review')->name('review.')->group(function(){
             Route::get('/',[ProductReviewController::class,'index'])->name('index');
-            Route::get('/reply/{review}',[ResponseController::class,'reply'])->name('reply');
-            Route::post('/reply/{review}/save',[ResponseController::class,'reply_save'])->name('reply.save');
+            Route::get('/{review}',[ResponseController::class,'reply'])->name('reply');
+            Route::post('/{review}/save',[ResponseController::class,'reply_save'])->name('reply.save');
+            Route::get('/{review}/edit',[ResponseController::class,'reply_edit'])->name('reply.edit');
+            Route::post('/{review}/edit/save',[ResponseController::class,'reply_edit_save'])->name('reply.edit.save');
         });
 
+        Route::prefix('/transaction')->name('transaction.')->group(function(){
+            Route::get('/',[TransactionController::class,'index'])->name('index');
+            Route::get('/{transaction}/edit',[TransactionController::class,'edit'])->name('edit');
+            Route::post('/{transaction}/edit/save',[TransactionController::class,'update'])->name('edit.save');
+        });
 
         Route::post('/product/image/{productImage}/delete',[ProductImageController::class,'destroy'])->name('product_image.delete');
         Route::post('/product/image/save',[ProductImageController::class,'upload'])->name('product_image.upload');

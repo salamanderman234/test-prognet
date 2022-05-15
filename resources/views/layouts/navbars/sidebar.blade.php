@@ -110,7 +110,7 @@
                 </li>
 
                 <li class="nav-item ">
-                    <a class="nav-link {{ Request::is('admin/transaction*') ? 'active':''}}" href="">
+                    <a class="nav-link {{ Request::is('admin/transaction*') ? 'active':''}}" href="{{ route('admin.transaction.index') }}">
                         <i class="ni ni-chart-pie-35 text-blue"></i> {{ __('Transaction') }}
                     </a>
                 </li>
@@ -121,7 +121,7 @@
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link {{ Request::is('admin/chat*') ? 'active':''}}" href="">
-                        <i class="ni ni-cart text-orange"></i> {{ __('Discount') }}
+                        <i class="ni ni-cart text-orange"></i> {{ __('Notification') }}
                     </a>
                 </li>
             </ul>

@@ -3,26 +3,31 @@
 namespace App\Http\Controllers\Transaction;
 
 use App\Models\Transaction;
+use App\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
+use App\Notifications\UserNotification;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
-use App\Http\Controllers\Controller;
 
 class TransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function updateStatus($transaction){
 
+    public function purchase(){
+        if(request()->has('items')){
+            $items = explode(",",request()->items);
+            dd();
+        }
     }
+
     public function index()
     {
-        //
-    }
-    public static function getTransactionByYear($year){
- 
+        $transactions = Transaction::orderBy('updated_at','desc')->paginate(5)->withQueryString();
+        Paginator::useBootstrap();
+        foreach($transactions as $transaction){
+            $transaction->product = $transaction->details->count();
+            $transaction->username = $transaction->user->name;
+        }
+        return view('dashboard.admin.transactions.index',compact('transactions'));
     }
 
     /**
@@ -65,7 +70,9 @@ class TransactionController extends Controller
      */
     public function edit(Transaction $transaction)
     {
-        //
+        $details = $transaction->details;
+        $transaction->username = $transaction->user->name;
+        return view('dashboard.admin.transactions.edit',compact('transaction','details'));
     }
 
     /**
@@ -75,9 +82,18 @@ class TransactionController extends Controller
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTransactionRequest $request, Transaction $transaction)
+    public function update(Transaction $transaction)
     {
-        //
+        $transaction->status = request()->status;
+        $transaction->save();
+        $user = $transaction->user;
+
+        $user->notify(new UserNotification(
+            'Transaksi dengan id-'.$transaction->id.' '.$transaction->status,
+            'transaction',
+            route('user.transactions')
+        ));
+        return back();
     }
 
     /**

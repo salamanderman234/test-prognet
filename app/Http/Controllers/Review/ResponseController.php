@@ -15,6 +15,17 @@ class ResponseController extends Controller
     public function reply(ProductReview $review){
         return view('dashboard.admin.reviews.create',compact('review'));
     }
+    public function reply_edit(ProductReview $review){
+        $response = $review->responses->first();
+        return view('dashboard.admin.reviews.edit',compact('response','review'));
+    }
+
+    public function reply_edit_save(ProductReview $review){
+        $response = $review->responses->first();
+        $response->content = request()->content;
+        $response->save();
+        return back()->with('message','Reply berhasil diedit');
+    }
     
     public function reply_save(ProductReview $review){
         $admin = Auth::guard('admin')->user();

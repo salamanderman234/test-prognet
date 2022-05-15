@@ -69,8 +69,8 @@
         </form>
         @include('layouts.navbars.sidebar')
         <div class="main-content h-100 bg-biru">
-            @include('layouts.navbars.navbar',['page_name'=>'Reviews',
-                        'main_link'=>'review.index',
+            @include('layouts.navbars.navbar',['page_name'=>'Transactions',
+                        'main_link'=>'transaction.index',
                         'subs'=>[]])
             <div class="header bg-biru pb-2 pt-5 pt-md-7 atas">
                 <div class="container-fluid">
@@ -94,36 +94,28 @@
                             <thead class="thead-dark border-0 text-center">
                               <tr class="rounded">
                                 <th scope="col">Id</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">Review</th>
-                                <th scope="col">Rate</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">User</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Status</th>
+                                {{-- <th scope="col">Action</th> --}}
                               </tr>
                             </thead>
                             <tbody>
-                                @forelse ($reviews as $review)
-                                    <tr class="text-center table-row" data-href='{{route('admin.review.reply.edit',$review)}}'>
-                                        <th class="clickable-row" scope="row">{{$review->id}}</th>
-                                        <td class="clickable-row">{{$review->product_name}}</td>
-                                        <td class="clickable-row">{{$review->content}}</td>
-                                        <td class="clickable-row">{{$review->rate}}</td>
-                                        @if ($review->responses->first()==null)
-                                            <td>
-                                                <a href="{{route('admin.review.reply',$review)}}" role="button" type="button" rel="tooltip" class="btn btn-primary btn-icon btn-sm text-light" data-original-title="" title="">
-                                                    <i class="ni ni-settings p-1"></i>
-                                                </a role="button">
-                                            </td>
-                                        @else
-                                            <td>
-                                                <span class="bg-success rounded p-2">
-                                                    Sudah Dibalas
-                                                </span>
-                                            </td>
-                                        @endif
+                                @forelse ($transactions as $transaction)
+                                    <tr class="text-center table-row" data-href='{{ route('admin.transaction.edit',$transaction) }}'>
+                                        <th class="clickable-row" scope="row">{{$transaction->id}}</th>
+                                        <td class="clickable-row">{{$transaction->username}}</td>
+                                        <td class="clickable-row">{{$transaction->product}}</td>
+                                        <td class="clickable-row">{{$transaction->status}}</td>
+                                        {{-- <td>
+                                            <a href="" role="button" type="button" rel="tooltip" class="btn btn-primary btn-icon btn-sm text-light rounded" data-original-title="" title="">
+                                                Ubah Status
+                                            </a role="button">
+                                        </td> --}}
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" align="center">No Reviews Found</td>
+                                        <td colspan="6" align="center">No Transaction Found</td>
                                     </tr>
                                 @endforelse
                                 
@@ -132,7 +124,7 @@
 
                     </div>
                     <div class="d-flex justify-content-center" style="font-size: 1.1em">
-                        {{$reviews->links()}}
+                        {{$transactions->links()}}
                     </div>
                 </div>
             </div>
