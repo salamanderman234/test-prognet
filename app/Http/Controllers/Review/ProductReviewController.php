@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Review;
 
+use App\Models\Admin;
+use App\Models\Product;
 use App\Models\ProductReview;
+use App\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
+use App\Notifications\AdminNotification;
 use App\Http\Requests\StoreProductReviewRequest;
 use App\Http\Requests\UpdateProductReviewRequest;
-use App\Http\Controllers\Controller;
 
 
 class ProductReviewController extends Controller
@@ -17,7 +21,12 @@ class ProductReviewController extends Controller
      */
     public function index()
     {
-        //
+        $reviews = ProductReview::orderBy('created_at','desc')->paginate(5)->withQueryString();
+        Paginator::useBootstrap();
+        foreach($reviews as $review){
+            $review->product_name = $review->product->product_name;
+        }
+        return view('dashboard.admin.reviews.index',compact('reviews'));
     }
 
     /**
@@ -25,30 +34,31 @@ class ProductReviewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Product $product, StoreProductReviewRequest $request)
     {
+        $request->validated();
+        $old_rate = $product->reviews->sum('rate');
         $review = ProductReview::create([
-            'product_id'=>request()->product_id,
-            'user_id'=>request()->user_id,
-            'rate'=>request()->rate,
-            'content'=>request()->content
+            'product_id'=>$product->id,
+            'user_id'=>auth()->user()->id,
+            'rate'=>$request->rate,
+            'content'=>$request->content ? $request->content:''
         ]);
-        $product_id = $review->product->id;
-        $admin = Admin::all();
-        $admin->notify(new AdminNotification('Review baru pada produk-'.$product_id)
-        ,'review',route('admin.product',$product_id));
+
+        $product->product_rate = ($old_rate + $request->rate)/($product->reviews->count()+1);
+        $product->save();
+        $admins = Admin::all();
+        foreach($admins as $admin){
+            $admin->notify(new AdminNotification(
+                'Review baru pada produk '.$product->product_name,
+                'review',
+                route("home.product_detail",['category'=>$product->categories->first(),'product'=>$product])
+            ));
+        }
+        return back()->with('message','Review berhasil diposting');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreProductReviewRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProductReviewRequest $request)
-    {
-        //
-    }
+
 
     /**
      * Display the specified resource.

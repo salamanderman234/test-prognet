@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProductReviewRequest extends FormRequest
@@ -13,7 +14,7 @@ class StoreProductReviewRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -24,7 +25,8 @@ class StoreProductReviewRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'rate'=>'required|min:0|max:5',
+            'content'=>'max:50'
         ];
     }
 }

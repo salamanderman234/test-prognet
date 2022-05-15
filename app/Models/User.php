@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Cart;
+use App\Models\Transaction;
 use App\Models\ProductReview;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -41,5 +43,13 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
     public function reviews(){
         return $this->hasMany(ProductReview::class);
+    }
+
+    public function carts(){
+        return $this->hasMany(Cart::class);
+    }
+
+    public function transactions(){
+        return $this->hasMany(Transaction::class);
     }
 }

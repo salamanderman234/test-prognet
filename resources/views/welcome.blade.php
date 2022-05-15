@@ -20,7 +20,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
     <link rel="stylesheet" href="{{ asset('css/animate.css')}}">
     <link rel="stylesheet" href="{{ asset('css/templatemo-misc.css')}}">
     <link rel="stylesheet" href="{{ asset('css/templatemo-style.css')}}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
@@ -79,6 +79,10 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
             font-size: 0.8em;
             color: goldenrod !important;
         }
+        .product-thumbnail {
+            max-width: 261px;
+            max-height: 379.633px;
+        }
     </style>
 </head>
 <body>
@@ -97,7 +101,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                         <div class="product-item">
                             <div class="product-thumb">
                                 @if ($new_product->thumbnail)
-                                    <img src="{{ asset("storage/".$new_product->thumbnail->image_name) }}" alt="">
+                                    <img class="product-thumbnail" src="{{ asset("storage/".$new_product->thumbnail->image_name) }}" alt="">
                                 @else
                                     <img src="images/gallery-image-2.jpg" alt="">
                                 @endif

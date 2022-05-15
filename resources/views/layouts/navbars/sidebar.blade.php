@@ -115,7 +115,7 @@
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link {{ Request::is('admin/chat*') ? 'active':''}}" href="">
+                    <a class="nav-link {{ Request::is('admin/reviews*') ? 'active':''}}" href="{{ route('admin.review.index') }}">
                         <i class="ni ni-chat-round text-green"></i> {{ __('Review & Reply') }}
                     </a>
                 </li>

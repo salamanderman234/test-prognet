@@ -3,12 +3,36 @@
 namespace App\Http\Controllers\Review;
 
 use App\Models\Response;
+use App\Models\ProductReview;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\UserNotification;
 use App\Http\Requests\StoreResponseRequest;
 use App\Http\Requests\UpdateResponseRequest;
-use App\Http\Controllers\Controller;
 
 class ResponseController extends Controller
 {
+    public function reply(ProductReview $review){
+        return view('dashboard.admin.reviews.create',compact('review'));
+    }
+    
+    public function reply_save(ProductReview $review){
+        $admin = Auth::guard('admin')->user();
+        Response::create([
+            'review_id'=>$review->id,
+            'admin_id'=>$admin->id,
+            'content'=>request()->content
+        ]);
+        $product = $review->product;
+        $user = $review->user;
+        $user->notify(new UserNotification(
+            "Review mu Dibalas oleh admin ! ( Review pada product ".$product->product_name." )",
+            "review",
+            route("home.product_detail",['category'=>$product->categories->first(),'product'=>$product])
+        ));
+        return back()->with('message','Berhasil membalas pesan');
+    }
+
     public function response(){
         request()->validate([
             'content'=>'max:100|required'

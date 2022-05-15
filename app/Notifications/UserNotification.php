@@ -16,11 +16,11 @@ class UserNotification extends Notification
      *
      * @return void
      */
-    public function __construct($message,$type)
+    public function __construct($message,$type,$link)
     {
         $this->message = $message;
         $this->type = $type;
-        $this->link = '//';
+        $this->link = $link;
     }
 
     /**

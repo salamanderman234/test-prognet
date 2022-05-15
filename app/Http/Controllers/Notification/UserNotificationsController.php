@@ -13,11 +13,15 @@ class UserNotificationsController extends Controller
 {
     public function show(){
         $notifications = Auth::user()->notifications;
-        // dd($notifications);
         return view('notifications/user',compact('notifications'));
     }
     public function sendNotification(User $user){
         $user->notify(new UserNotification('Test test','Danger'));
         return back();
+    }
+
+    public function update(){
+        auth()->user()->unreadNotifications()->markAsRead();
+        return true;
     }
 }

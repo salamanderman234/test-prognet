@@ -13,7 +13,7 @@ class LoginController extends Controller
 {
     public function userLogin(){
         $credentials = request()->validate([
-            'email'=>'required|email',
+            'email'=>'required|email:rfc,dns',
             'password'=>'required'
         ]);
         $remember = false;
@@ -38,7 +38,7 @@ class LoginController extends Controller
 
     public function userRegister(){
         $credentials = request()->validate([
-            'email'=>['required',Rule::unique('users')->whereNull('deleted_at'),'min:4','max:20'],
+            'email'=>['required',Rule::unique('users')->whereNull('deleted_at'),'email:rfc,dns'],
             'name'=>'required',
             'password'=>'required',
         ]);

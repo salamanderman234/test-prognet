@@ -3,15 +3,19 @@
 use App\Models\CategoryDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Notifications\UserNotification;
 use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\AdminController;
+use App\Http\Controllers\Review\ResponseController;
 use App\Http\Controllers\Resource\CourierController;
 use App\Http\Controllers\Resource\ProductController;
+use App\Http\Controllers\Review\ProductReviewController;
 use App\Http\Controllers\Resource\ProductImageController;
 use App\Http\Controllers\Resource\CategoryDetailController;
+use App\Http\Controllers\Transaction\TransactionController;
 use App\Http\Controllers\Resource\ProductCategoryController;
 use App\Http\Controllers\Notification\UserNotificationsController;
 /*
@@ -43,7 +47,23 @@ Route::prefix('/')->name('user.')->group(function(){
         Route::get('/profile',[UserController::class,'home'])->name('profile');
         Route::get('/notifications',[UserNotificationsController::class,'show'])->name('notifications');
         Route::post('/send_notification/{user}',[UserNotificationsController::class,'sendNotification'])->name('send_notif');
-        Route::post('/cart/{product}',[CartController::class,'add'])->name('cart.add');
+        Route::post('/cart/{product}/add',[CartController::class,'add'])->name('cart.add');
+        Route::get('/cart',[CartController::class,'index'])->name('cart.index');
+        Route::post('/cart/{cart}/delete',[CartController::class,'destroy'])->name('cart.delete');
+        Route::post('/cart/product/harga',[CartController::class,'harga'])->name('cart.product.harga');
+
+        Route::get('/catalog',[HomeController::class,'catalog'])->name('catalog');
+
+        Route::get('/profile',[HomeController::class,'profile'])->name('profile');
+        Route::post('/profile/save',[HomeController::class,'edit_profile'])->name('profile.save');
+
+        Route::get('/transactions',[HomeController::class,'transactions'])->name('transactions');
+        Route::post('/transaction/{transaction}/cancel',[TransactionController::class,'cancel'])->name('transaction.cancel');
+
+        Route::post('/{product}/review',[ProductReviewController::class,'create'])->name('product.review');
+        Route::get('/reviews',[HomeController::class,'reviews'])->name('reviews');
+
+        Route::post('/notification/read',[UserNotification::class,'update'])->name('notification.read');
     });
     Route::post('/logout',[LoginController::class,'userLogout'])->name('logout')->middleware(['auth','back']); 
 
@@ -66,6 +86,14 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::resource('category', ProductCategoryController::class);
             Route::resource('courier', CourierController::class);
         });
+
+        Route::prefix('/reviews')->name('review.')->group(function(){
+            Route::get('/',[ProductReviewController::class,'index'])->name('index');
+            Route::get('/reply/{review}',[ResponseController::class,'reply'])->name('reply');
+            Route::post('/reply/{review}/save',[ResponseController::class,'reply_save'])->name('reply.save');
+        });
+
+
         Route::post('/product/image/{productImage}/delete',[ProductImageController::class,'destroy'])->name('product_image.delete');
         Route::post('/product/image/save',[ProductImageController::class,'upload'])->name('product_image.upload');
         Route::post('/product/product_category/save',[CategoryDetailController::class,'change'])->name('product_category.change');
@@ -74,4 +102,4 @@ Route::prefix('admin')->name('admin.')->group(function(){
     });
 });
 
-Route::view('/test','dashboard.user.search');
+Route::view('/test','dashboard.user.notifications');

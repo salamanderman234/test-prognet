@@ -35,6 +35,9 @@ class ProductController extends Controller{
         ]);
         $path = "";
         if(request()->hasFile('product_image')){
+            request()->validate([
+                'product_image'=>'image'
+            ]);
             $destination_path = 'images/products';
             $path = $request->file('product_image')->store($destination_path);
             ProductImage::create([
@@ -70,7 +73,9 @@ class ProductController extends Controller{
         $product->slug = Str::slug($request->product_name);
 
         if($request->has('thumbnail')){
-            
+            $request->validate([
+                'thumbnail'=>'image'
+            ]);
             $destination_path = 'images/products';
             $path = $request->file('thumbnail')->store($destination_path);
             $product_thumbnail = $product->images->first();

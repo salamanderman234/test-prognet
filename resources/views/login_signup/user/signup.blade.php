@@ -65,7 +65,7 @@
                                     @enderror
                                 </div>
                            </div>
-                          <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" aria-describedby="emailHelp">
+                          <input value="{{ old('email') }}" type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" aria-describedby="emailHelp">
                         </div>
                         <div class="mb-3">
                             <div class="row">
@@ -80,7 +80,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" aria-describedby="emailHelp">
+                            <input value="{{ old('name') }}" type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" aria-describedby="emailHelp">
                         </div>
                         <div class="mb-3">
                           <div class="row">

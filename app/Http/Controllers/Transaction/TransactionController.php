@@ -15,21 +15,14 @@ class TransactionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function updateStatus($transaction){
-        $transaction->status = request()->status;
-        $transaction->save();
-        $transaction->user
-                    ->notify(new UserNotification('Transaksi dengan id '
-                                .$transaction->id.' telah'
-                                .request()->status),'transaksi');
-        return back()->with('message','transaksi '.$transaction->id.' berhasil diupdate !');
+
     }
     public function index()
     {
         //
     }
     public static function getTransactionByYear($year){
-        $data = \DB::select('SELECT MONTH(updated_at) AS Bulan,COUNT(updated_at) FROM `transactions` WHERE `status` = "Dibayar" AND YEAR(updated_at)="2022" GROUP BY YEAR(updated_at), MONTH(updated_at)');
-        return $data;
+ 
     }
 
     /**
@@ -39,13 +32,7 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        $transaction = Transaction::create([
-            'timeout bla bla'
-        ]);
-        $admin = Admin::all();
-        $admin->notify(new AdminNotification('Transaksi Baru ! id = '.$transaction->id
-                      ),'new transaction',route('admin.transaksi',$transaction->id));
-        return 'kemana ?';
+
     }
 
     /**
@@ -99,8 +86,10 @@ class TransactionController extends Controller
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaction $transaction)
+    public function cancel(Transaction $transaction)
     {
-        //
+        $transaction->status = "Dibatalkan";
+        $transaction->save();
+        return back()->with('message','Transaksi berhasil dibatalkan');
     }
 }

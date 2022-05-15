@@ -158,8 +158,17 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                             </div>
                         </div>
                         <p class="product-infos">
-                            <span>Price: Rp. {{ number_format($product->price) }}</span>
-                            <span>Discount: 0%</span>
+                            <span>Price: Rp. 
+                                @if ($product_discount)
+                                    <s class="me-1">
+                                        {{ number_format($product->price) }}                                    
+                                    </s>
+                                    {{ number_format($product->price - ($product_discount->percentage*$product->price/100)) }}                                    
+                                @else
+                                    {{ number_format($product->price) }}                                    
+                                @endif
+                            </span>
+                            <span>Discount: {{ $product_discount ? $product_discount->percentage:'0' }}%</span>
                         </p>
                         <form id="add-cart" action="{{ route('user.cart.add',$product) }}" method="POST">    
                             @csrf
@@ -192,7 +201,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                                 @endif
                             @endforeach
                         @else
-                            <div class="product-item-2">
+                            <div class="product-item-2 text-center">
                                 <div class="product-thumb">
                                     <span>Tidak ada perview product !</span>
                                 </div>
