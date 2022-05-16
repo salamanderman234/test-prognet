@@ -196,6 +196,12 @@ class TransactionController extends Controller
                 'selling_price'=>$final_price
             ]);
         }
+        $admins = Admin::all();
+        Notification::send($admins, new AdminNotification(
+            "Transaksi Baru dengan id-".$transaction->id,
+            "transaction",
+            route("admin.transaction.edit",$transaction)
+        ));
         return redirect()->route('user.transactions');
     }
 

@@ -1,4 +1,4 @@
-<html lang="en"><head>
+<html lang="en" class="h-100"><head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,15 +38,15 @@
     <!-- Argon JS -->
     <script src="{{ asset('argon') }}/js/argon.js?v=1.0.0"></script>
     </head>
-    <body class="clickup-chrome-ext_installed">
+    <body class="clickup-chrome-ext_installed h-100">
         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
             @csrf
         </form>
         @include('layouts.navbars.sidebar')
-        <div class="main-content">
+        <div class="main-content h-100">
             @include('layouts.navbars.navbar',['page_name'=>'Courier',
                         'main_link'=>'table.courier.index'])
-            <div class="header bg-biru pb-8 pt-5 pt-md-7">
+            <div class="header bg-biru pb-8 pt-5 pt-md-7 h-100">
                 <div class="container-fluid">
                     <div class="header-body">
                         <form action="{{route('admin.table.courier.store')}}" method="POST" enctype="multipart/form-data">
@@ -86,10 +86,10 @@
                     </div>
                 </div>
             </div>
-
+{{-- 
             <div class="container-fluid mt--1 bg-biru ">
                 @include('layouts.footers.footer')
-            </div>
+            </div> --}}
         </div>
     </body>
 </html>

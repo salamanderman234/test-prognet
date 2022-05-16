@@ -69,8 +69,8 @@
         </form>
         @include('layouts.navbars.sidebar')
         <div class="main-content h-100 bg-biru">
-            @include('layouts.navbars.navbar',['page_name'=>'Transactions',
-                        'main_link'=>'transaction.index',
+            @include('layouts.navbars.navbar',['page_name'=>'Notifications',
+                        'main_link'=>'notifications',
                         'subs'=>[]])
             <div class="header bg-biru pb-2 pt-5 pt-md-7 atas">
                 <div class="container-fluid">
@@ -94,28 +94,26 @@
                             <thead class="thead-dark border-0 text-center">
                               <tr class="rounded">
                                 <th scope="col">Id</th>
-                                <th scope="col">User</th>
-                                <th scope="col">Product</th>
+                                <th scope="col">Message</th>
                                 <th scope="col">Status</th>
-                                {{-- <th scope="col">Action</th> --}}
                               </tr>
                             </thead>
                             <tbody>
-                                @forelse ($transactions as $transaction)
-                                    <tr class="text-center table-row" data-href='{{ route('admin.transaction.edit',$transaction) }}'>
-                                        <th class="clickable-row" scope="row">{{$transaction->id}}</th>
-                                        <td class="clickable-row">{{$transaction->username}}</td>
-                                        <td class="clickable-row">{{$transaction->product}}</td>
-                                        <td class="clickable-row">{{$transaction->status}}</td>
-                                        {{-- <td>
-                                            <a href="" role="button" type="button" rel="tooltip" class="btn btn-primary btn-icon btn-sm text-light rounded" data-original-title="" title="">
-                                                Ubah Status
-                                            </a role="button">
-                                        </td> --}}
+                                @forelse ($notifications as $notification)
+                                    <tr class="text-center table-row" data-href='{{ $notification->data["link"] }}'>
+                                        <th class="clickable-row" scope="row">{{$notification->id}}</th>
+                                        <td class="clickable-row">{{$notification->data["message"]}}</td>
+                                        <td class="clickable-row">
+                                            @if ($notification->read_at != null)
+                                                <span class="p-2 rounded bg-success text-white">Terbaca</span>
+                                            @else
+                                                <span class="p-2 rounded bg-warning text-white">Belum Terbaca</span>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" align="center">No Transaction Found</td>
+                                        <td colspan="6" align="center">No Notification Found</td>
                                     </tr>
                                 @endforelse
                                 
@@ -124,7 +122,7 @@
 
                     </div>
                     <div class="d-flex justify-content-center" style="font-size: 1.1em">
-                        {{$transactions->links()}}
+                        {{$notifications->links()}}
                     </div>
                 </div>
             </div>
@@ -138,8 +136,25 @@
         <script src="{{ asset('argon') }}/js/argon.js?v=1.0.0"></script>
         <script>
             $(document).ready(function($) {
+                var csrf = $('meta[name="csrf-token"]').attr('content')
+
                 $(".clickable-row").click(function() {
-                    window.location = $(this).parent().data("href");
+                    $.ajaxSetup({
+                        headers:
+                        { 'X-CSRF-TOKEN': csrf }
+                    });
+                    request = $.ajax({
+                        url: "{{ route('admin.notification.read') }}",
+                        type: "post",
+                        data: {
+                            'notif': String($(this).parent().children()[0].textContent)
+                        } 
+                    });
+                    obj = $(this)
+                    request.done(function(response,textStatus, jqXHR){
+                        window.location = obj.parent().data("href");
+                    })
+
                 });
                 $(".delete").click(function() {
                     $('.delete-form').submit()

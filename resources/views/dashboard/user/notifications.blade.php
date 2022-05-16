@@ -10,7 +10,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                @forelse (auth()->user()->unreadNotifications as $notification)
+                @forelse ($unreads as $notification)
                     <div class="p-3 container bg-{{ $notification->data['type']=='review' ? 'success' : 'warning' }} rounded mt-3">
                         <a href="{{ $notification->data['link'] != null ? $notification->data['link'] : ''  }}">
                             {{ $notification->data["message"] }}

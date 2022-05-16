@@ -88,6 +88,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('/home',[AdminController::class,'index'])->name('home');
         Route::post('/logout',[LoginController::class,'adminLogout'])->name('logout');
 
+        Route::post('/get_chart',[AdminController::class,'get_chart_data'])->name('get_chart');
+
         //prefix untuk table
         Route::prefix('/table')->name('table.')->group(function () {
             Route::resource('product', ProductController::class);
@@ -108,6 +110,9 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::get('/{transaction}/edit',[TransactionController::class,'edit'])->name('edit');
             Route::post('/{transaction}/edit/save',[TransactionController::class,'update'])->name('edit.save');
         });
+        
+        Route::get('/notifications',[UserNotificationsController::class,'admin_notifications'])->name('notifications');
+        Route::post('/notification/read',[UserNotificationsController::class,'admin_notification_read'])->name('notification.read');
 
         Route::post('/product/image/{productImage}/delete',[ProductImageController::class,'destroy'])->name('product_image.delete');
         Route::post('/product/image/save',[ProductImageController::class,'upload'])->name('product_image.upload');

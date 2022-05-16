@@ -1,4 +1,4 @@
-<html lang="en"><head>
+<html lang="en" class="h-100"><head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,15 +38,15 @@
     <!-- Argon JS -->
     <script src="{{ asset('argon') }}/js/argon.js?v=1.0.0"></script>
     </head>
-    <body class="clickup-chrome-ext_installed">
+    <body class="clickup-chrome-ext_installed h-100">
         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
             @csrf
         </form>
         @include('layouts.navbars.sidebar')
-        <div class="main-content">
+        <div class="main-content h-100">
             @include('layouts.navbars.navbar',['page_name'=>'Products',
                         'main_link'=>'table.product.index'])
-            <div class="header bg-biru pb-8 pt-5 pt-md-7">
+            <div class="header bg-biru pb-8 pt-5 pt-md-7 h-100">
                 <div class="container-fluid">
                     <div class="header-body">
                         <form action="{{route('admin.table.courier.update',$courier)}}" method="POST" enctype="multipart/form-data">
@@ -72,7 +72,7 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <input value="{{$courier->courier_name}}" type="text" class="form-control @error('courier') is-invalid @enderror" id="name" name="courier">
+                                            <input value="{{$courier->courier}}" type="text" class="form-control @error('courier') is-invalid @enderror" id="name" name="courier">
                                         </div>
                                         
                                         <div class="d-flex justify-content-center">
@@ -88,9 +88,9 @@
                     </div>
                 </div>
             </div>
-            <div class="container-fluid mt--8 bg-biru ">
+            {{-- <div class="container-fluid mt--8 bg-biru ">
                 @include('layouts.footers.footer')
-            </div>
+            </div> --}}
         </div>
     </body>
 </html>

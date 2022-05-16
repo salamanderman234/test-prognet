@@ -299,7 +299,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container-fluid mt--8 bg-biru ">
+            <div class="container-fluid mt--1 bg-biru ">
                 @include('layouts.footers.footer')
             </div>
         </div>

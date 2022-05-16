@@ -26,7 +26,7 @@ class StoreCourierRequest extends FormRequest
     public function rules()
     {
         return [ 
-            'courier'=>['required','max:50','min:5',Rule::unique('couriers')->whereNull('deleted_at')]
+            'courier'=>['required','max:50',Rule::unique('couriers')->whereNull('deleted_at')]
         ];
     }
 }

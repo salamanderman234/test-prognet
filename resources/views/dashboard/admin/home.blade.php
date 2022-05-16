@@ -1,4 +1,4 @@
-<html lang="en"><head>
+<html lang="en" class="h-100"><head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,24 +40,8 @@
     <meta property="og:image" content="https://s3.amazonaws.com/creativetim_bucket/products/96/original/opt_ad_thumbnail.jpg" />
     <meta property="og:description" content="Start your development with a Dashboard for Bootstrap 4." />
     <meta property="og:site_name" content="Creative Tim" />
-    <!-- Google Tag Manager -->
-    <script>
-        (function(w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-NKDMSK6');
-    </script>
-    <!-- End Google Tag Manager -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         .bg-biru {
             background-color:#2A80B9; 
@@ -67,12 +51,13 @@
         }
     </style>
     </head>
-    <body class="clickup-chrome-ext_installed">
+
+    <body class="clickup-chrome-ext_installed h-100">
         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
             @csrf
         </form>
         @include('layouts.navbars.sidebar')
-        <div class="main-content bg-biru">
+        <div class="main-content bg-biru h-100">
             @include('layouts.navbars.navbar',['page_name'=>'Dashboard',
                     'main_link'=>'home',
                     'subs'=>[]])
@@ -177,45 +162,12 @@
                             <div class="card-header border-0">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h3 class="mb-0">Users</h3>
-                                    </div>
-                                    <div class="col-4 text-right">
-                                        <a href="" class="btn btn-sm btn-primary">Add user</a>
+                                        <h3 class="mb-0">Sales</h3>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12">
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table align-items-center table-flush">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Creation Date</th>
-                                            <th scope="col"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Admin Admin</td>
-                                            <td>
-                                                <a href="mailto:admin@argon.com">admin@argon.com</a>
-                                            </td>
-                                            <td>12/02/2020 11:00</td>
-                                            <td class="text-right">
-                                                <div class="dropdown">
-                                                    <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                        <a class="dropdown-item" href="">Edit</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="col-12" style="height:30vh; width:100%">
+                                <canvas id="myChart" height="80px"></canvas>
                             </div>
                             <div class="card-footer py-4">
                                 <nav class="d-flex justify-content-end" aria-label="...">
@@ -225,12 +177,83 @@
                         </div>
                     </div>
                 </div>
-                @include('layouts.footers.footer')
-            </div>
+                {{-- @include('layouts.footers.footer') --}}
+            </div> 
+            
         </div>
-        <script src="{{ asset('argon') }}/vendor/jquery/dist/jquery.min.js"></script>
-        <script src="{{ asset('argon') }}/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
         <!-- Argon JS -->
         <script src="{{ asset('argon') }}/js/argon.js?v=1.0.0"></script>
+
+        <script>
+            const csrf = $('meta[name="csrf-token"]').attr('content')
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const label = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+            let datas = [0,0,0,0,0,0,0,0,0,0,0,0]
+            $.ajaxSetup({
+                headers:
+                { 'X-CSRF-TOKEN': csrf }
+            });
+            request = $.ajax({
+                url: "{{ route('admin.get_chart') }}",
+                type: "post",
+            });
+
+            request.done(function (response, textStatus, jqXHR){
+                data = JSON.parse(response)
+                if(data.length > 0){
+                    data.forEach(element => {
+                        datas[element.bulan-1] = element.jumlah
+                    });
+                    console.log(datas)
+                }
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: label,
+                        datasets: [{
+                            label: 'Sales',
+                            data: datas,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

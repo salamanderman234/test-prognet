@@ -13,7 +13,13 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
-    
+
+    public function get_chart_data(){
+        $data_transaction = \DB::select('SELECT MONTH(updated_at) AS bulan,COUNT(updated_at) AS jumlah FROM `transactions` WHERE `status` = "Sampai di tujuan" AND YEAR(updated_at)="2022" GROUP BY YEAR(updated_at), MONTH(updated_at)');
+        $transaction = json_encode($data_transaction);
+        return $transaction;
+    }
+
     public function index()
     {
         $new_user = User::where('created_at','>',date("Y-m-d", strtotime("-1 week")))
@@ -56,6 +62,7 @@ class AdminController extends Controller
             ->where('transactions.status','Dibayar')
             ->count();
 
+
         return view('dashboard.admin.home',compact(
             'new_user',
             'new_transaction',
@@ -63,7 +70,8 @@ class AdminController extends Controller
             'past_new_user',
             'past_new_transaction',
             'revenue_past_week',
-            'overall_review'
+            'overall_review',
+
         ));
     }
     /**

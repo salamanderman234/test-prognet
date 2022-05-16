@@ -155,7 +155,7 @@
         <script>
             $(document).ready(function($) {
                 $(".clickable-row").click(function() {
-                    window.location = $('.table-row').data("href");
+                    window.location = $(this).parent().data("href");
                 });
                 $(".delete").click(function() {
                     $('.delete-form').submit()

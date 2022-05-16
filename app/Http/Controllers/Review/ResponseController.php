@@ -41,7 +41,7 @@ class ResponseController extends Controller
             "review",
             route("home.product_detail",['category'=>$product->categories->first(),'product'=>$product])
         ));
-        return back()->with('message','Berhasil membalas pesan');
+        return redirect()->route('admin.review.index')->with('message','Berhasil membalas pesan');
     }
 
     public function response(){

@@ -120,7 +120,7 @@
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link {{ Request::is('admin/chat*') ? 'active':''}}" href="">
+                    <a class="nav-link {{ Request::is('admin/notifications*') ? 'active':''}}" href="{{ route('admin.notifications') }}">
                         <i class="ni ni-cart text-orange"></i> {{ __('Notification') }}
                     </a>
                 </li>

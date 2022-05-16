@@ -165,7 +165,11 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                                     Review
                                 </a>
                             </li>
-                            <li class="list-group-item rounded-0 border-0 {{ Request::is('notifications') ? 'actived':'' }}">Notification</li>
+                            <li class="list-group-item rounded-0 border-0 {{ Request::is('notifications') ? 'actived':'' }}">
+                                <a href="{{ route("user.notifications") }}">
+                                    Notification
+                                </a>
+                            </li>
                           </ul>
                     </div>
                 </div>
