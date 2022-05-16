@@ -44,8 +44,8 @@
                             @if (count(auth()->user()->carts()->where('status','Belum Checkout')->get())>0)
                                 <span class="badge badge-notify-cart rounded-circle">{{count(auth()->user()->carts()->where('status','Belum Checkout')->get())}}</span>
                             @endif
-                            <div class="dropdown d-flex justify-content-center notification-icon">
-                                <a id="notification-icon" class="dropdown-toggle " id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="dropdown d-flex justify-content-center " id="notification-icon">
+                                <a href="{{ route('user.notifications') }}" id="notification-icon" class="dropdown-toggle " id="navbarDropdown2" role="button">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bell-fill {{ count(auth()->user()->unreadNotifications)==0 ?'me-3':'' }}" viewBox="0 0 16 16">
                                         <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
                                     </svg>
@@ -53,9 +53,9 @@
                                 @if (count(auth()->user()->unreadNotifications)>0)
                                     <span class="badge badge-notify rounded-circle">{{ count(auth()->user()->unreadNotifications) }}</span>
                                 @endif
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown2">
+                                {{-- <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown2">
                                     <li><a class="dropdown-item" href="#">No Notification</a></li>
-                                </ul>   
+                                </ul>    --}}
                             </div>     
                             <a href="" class="dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -83,3 +83,18 @@
         </div> <!-- /.container -->
     </div> <!-- /.main-nav -->
 </header> <!-- /.site-header -->
+<script>
+    $(document).ready(function(){
+        var csrf = "{{ csrf_token() }}"
+        $.ajaxSetup({
+            headers:
+            { 'X-CSRF-TOKEN': csrf }
+        });
+        $("#notification-icon").click(function(){
+            request = $.ajax({
+                url: "{{ route('user.notification.read') }}",
+                type: "post",
+            });
+        })
+    })
+</script>

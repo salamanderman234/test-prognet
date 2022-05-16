@@ -20,9 +20,9 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
     <link rel="stylesheet" href="{{ asset('css/animate.css')}}">
     <link rel="stylesheet" href="{{ asset('css/templatemo-misc.css')}}">
     <link rel="stylesheet" href="{{ asset('css/templatemo-style.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
 
@@ -101,6 +101,12 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
     </style>
 </head>
 <body>
+
+    <form id="purchase_form" action="{{ route('user.purchase',["products"=>$product->id]) }}" method="post">
+        @csrf
+        <input type="text" name="qty_purchase" id="qty_purchase" value="1" hidden>
+        <input type="text" name="total" id="total" value="{{ $product_discount ? $product->price - ($product_discount->percentage/100*$product->price) : $product->price }}" hidden>
+    </form>
     @include('layouts.navbars.user_navbar')
     <div class="content-section mt-4">
         <div class="container">
@@ -175,10 +181,10 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                             <ul class="product-buttons">
                                 <li>
                                     <span>Quantity :</span>
-                                    <input style="width: 34%" type="number" name="qty" value="1">
+                                    <input style="width: 34%" type="number" name="qty" value="1" id="qty-form">
                                 </li>
                                 <li class="d-inline">
-                                    <a href="#" class="main-btn buy">Buy Now</a>
+                                    <a role="button" id="buy-button" class="main-btn buy">Buy Now</a>
                                 </li>
                                 <li class="d-inline">
                                     <a href="#" class="main-btn cart" style="background-color: goldenrod" onclick="document.getElementById('add-cart').submit();">Add to Cart</a>
@@ -280,116 +286,21 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
             @endforelse
         </div>
     </div>
-    <div class="content-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 section-title">
-                    <h2>Vote For Future Products</h2>
-                </div> <!-- /.section -->
-            </div> <!-- /.row -->
-            <div class="row">
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-item-vote">
-                        <div class="product-thumb">
-                            <img src="images/products/1.jpg" alt="">
-                        </div> <!-- /.product-thum -->
-                        <div class="product-content">
-                            <h5><a href="#">Name of Shirt</a></h5>
-                            <span class="tagline">By: Catherine</span>
-                            <ul class="progess-bars">
-                                <li>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
-                                        <span>4<i class="fa fa-heart"></i></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="progress">
-                                        <div class="progress-bar comments" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                                        <span class="comments">6<i class="fa fa-heart"></i></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div> <!-- /.product-content -->
-                    </div> <!-- /.product-item-vote -->
-                </div> <!-- /.col-md-3 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-item-vote">
-                        <div class="product-thumb">
-                            <img src="images/products/2.jpg" alt="">
-                        </div> <!-- /.product-thum -->
-                        <div class="product-content">
-                            <h5><a href="#">Name of Shirt</a></h5>
-                            <span class="tagline">By: Rebecca</span>
-                            <ul class="progess-bars">
-                                <li>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
-                                        <span>4<i class="fa fa-heart"></i></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="progress">
-                                        <div class="progress-bar comments" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                                        <span class="comments">6<i class="fa fa-heart"></i></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div> <!-- /.product-content -->
-                    </div> <!-- /.product-item-vote -->
-                </div> <!-- /.col-md-3 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-item-vote">
-                        <div class="product-thumb">
-                            <img src="images/products/3.jpg" alt="">
-                        </div> <!-- /.product-thum -->
-                        <div class="product-content">
-                            <h5><a href="#">Name of Shirt</a></h5>
-                            <span class="tagline">By: Catherine</span>
-                            <ul class="progess-bars">
-                                <li>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
-                                        <span>4<i class="fa fa-heart"></i></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="progress">
-                                        <div class="progress-bar comments" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                                        <span class="comments">6<i class="fa fa-heart"></i></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div> <!-- /.product-content -->
-                    </div> <!-- /.product-item-vote -->
-                </div> <!-- /.col-md-3 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-item-vote">
-                        <div class="product-thumb">
-                            <img src="images/products/4.jpg" alt="">
-                        </div> <!-- /.product-thum -->
-                        <div class="product-content">
-                            <h5><a href="#">Name of Shirt</a></h5>
-                            <span class="tagline">By: Rebecca</span>
-                            <ul class="progess-bars">
-                                <li>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
-                                        <span>4<i class="fa fa-heart"></i></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="progress">
-                                        <div class="progress-bar comments" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                                        <span class="comments">6<i class="fa fa-heart"></i></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div> <!-- /.product-content -->
-                    </div> <!-- /.product-item-vote -->
-                </div> <!-- /.col-md-3 -->
-            </div> <!-- /.row -->
-        </div> <!-- /.container -->
-    </div> <!-- /.content-section -->
+    
     @include('layouts.footers.user_footer')
 </body>
+<script>
+    $(document).ready(function(){
+        $("#buy-button").click(function(){
+            console.log('asiap')
+            $("#purchase_form").submit()
+        })
+        $("#qty-form").change(function(){
+            var total = parseInt($(this).val()) * parseInt({{ $product_discount ? $product->price - ($product_discount->percentage/100*$product->price) : $product->price }})
+            $("#qty_purchase").val($(this).val())
+            $("#total").val(total)
+            console.log($("#total").val())
+            console.log($("#qty_purchase").val())
+        })
+    })
+</script>

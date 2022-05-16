@@ -107,6 +107,11 @@ class HomeController extends Controller
     }
 
     public function transactions(){
+        $expired_transactions = auth()->user()->transactions()->where("timeout","<=",Carbon::now())->where('status',"Menunggu verifikasi")->get();
+        foreach($expired_transactions as $transaction){
+            $transaction->status = "Expired";
+            $transaction->save();
+        }
         $transactions = auth()->user()->transactions()->orderBy('updated_at','desc')->get();
         foreach($transactions as $transaction){
             $transaction->details_transaction = $transaction->details;

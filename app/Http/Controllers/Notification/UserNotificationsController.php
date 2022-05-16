@@ -12,16 +12,11 @@ use App\Notifications\UserNotification;
 class UserNotificationsController extends Controller
 {
     public function show(){
-        $notifications = Auth::user()->notifications;
-        return view('notifications/user',compact('notifications'));
-    }
-    public function sendNotification(User $user){
-        $user->notify(new UserNotification('Test test','Danger'));
-        return back();
+        return view('dashboard.user.notifications');
     }
 
     public function update(){
-        auth()->user()->unreadNotifications()->markAsRead();
+        auth()->user()->unreadNotifications->markAsRead();
         return true;
     }
 }

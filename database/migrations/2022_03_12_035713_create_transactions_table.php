@@ -24,7 +24,7 @@ class CreateTransactionsTable extends Migration
             $table->bigInteger('sub_total');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('courier_id')->constrained('couriers')->onDelete('cascade');
-            $table->string('proof_of_payment');
+            $table->string('proof_of_payment')->nullable();
             $table->enum('status',['Terverifikasi','Menunggu verifikasi','Dibatalkan','Expired','Dalam perjalanan','Sampai di tujuan']);
             $table->timestamps();
             $table->softDeletes();

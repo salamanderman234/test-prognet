@@ -98,6 +98,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
     @include('layouts.navbars.user_navbar')
     <form id="purchaseForm" action="{{ route('user.purchase') }}" method="POST">
         @csrf
+        <input type="text" id="total-harga" name="total" hidden>
         <input id="items" type="text" name="items" hidden>
     </form>
     <div class="mt-4 mb-5">
@@ -185,6 +186,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
             var finalPrice = $('#finalPrice')
             var purchaseButton = $("#purchase")
             var purchaseForm = $('#purchaseForm')
+            var total_harga = $('#total-harga')
             $.ajaxSetup({
                 headers:
                 { 'X-CSRF-TOKEN': csrf }
@@ -208,6 +210,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                         totalSementara.text(totalPriceTemp.toLocaleString('en-US'))
                         totalDiscount.text(totalDiscountTemp.toLocaleString('en-US'))
                         finalPrice.text(totalFinal.toLocaleString('en-US'))
+                        total_harga.val(totalFinal)
                     });
                     
                 }else {
@@ -227,6 +230,8 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                         totalSementara.text(totalPriceTemp.toLocaleString('en-US'))
                         totalDiscount.text(totalDiscountTemp.toLocaleString('en-US'))
                         finalPrice.text(totalFinal.toLocaleString('en-US'))
+                        total_harga.val(totalFinal)
+
                     });
                 }
                 totalItem.text('Total Harga ('+items_checked.length +' barang)')

@@ -9,7 +9,7 @@
             </div>
         </div>
         @forelse ($transactions as $transaction)
-            <div class="container rounded shadow p-4">
+            <div class="container rounded shadow p-4 mb-4">
                 <div class="row m-0 border-bottom mb-3">
                     <span class="d-flex align-items-center mb-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2 bi bi-bag-fill" viewBox="0 0 16 16">
@@ -34,6 +34,11 @@
                     </div>
                     <div class="col-4 p-0">
                         <div class="container  p-0 d-flex justify-content-end mb-4  ">
+                            @if ($transaction->status == "Menunggu verifikasi")
+                                <span class="me-3 rounded border p-2" style="font-size: 0.7em">
+                                    {{ $transaction->timeout }}
+                                </span>
+                            @endif
                             <span class="rounded text-white px-2 py-1 bg-@if($transaction->status=='Terverifikasi' || $transaction->status=='Sampai di tujuan' || $transaction->status=='Dalam Perjalanan'){{ 'success' }}@elseif($transaction->status=='Menunggu verifikasi'){{ 'warning' }}@elseif($transaction->status=='Dibatalkan'){{ 'danger' }}@elseif($transaction->status=='Expired'){{ 'secondary' }}@endif" style="font-size: 0.7em">
                                 {{ $transaction->status }}
                             </span>
@@ -120,10 +125,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <form action="" id="uploadBuktiForm{{ $transaction->id }}" method="POST">
+                                            <form action="{{ route("user.purchase.upload_proof",$transaction) }}" id="uploadBuktiForm{{ $transaction->id }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <label for="">Bukti (*jpg, png, jpeg)</label>
-                                                <input class="form-control mt-2" type="file" value="0" name="rate" accept="image/png, image/jpg, image/jpeg">
+                                                <input class="form-control mt-2" type="file" name="proof" accept="image/png, image/jpg, image/jpeg" required>
                                             </form>
                                         </div>
                                         <div class="modal-footer d-flex justify-content-center">

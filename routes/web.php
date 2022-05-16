@@ -64,9 +64,14 @@ Route::prefix('/')->name('user.')->group(function(){
         Route::post('/{product}/review',[ProductReviewController::class,'create'])->name('product.review');
         Route::get('/reviews',[HomeController::class,'reviews'])->name('reviews');
 
-        Route::post('/notification/read',[UserNotification::class,'update'])->name('notification.read');
+        Route::post('/notifications/read',[UserNotificationsController::class,'update'])->name('notification.read');
+        Route::get('/notifications',[UserNotificationsController::class,'show'])->name('notifications');
 
         Route::post('/purchase',[TransactionController::class,'purchase'])->name('purchase');
+        Route::post('/purchase/save',[TransactionController::class,'purchase_save'])->name('purchase.save');
+
+        Route::post('/purchase/{transaction}/upload_proof',[TransactionController::class,'upload_proof'])->name('purchase.upload_proof');
+        Route::post('/get_shipping_cost',[TransactionController::class,'get_shipping_cost'])->name('get_shipping_cost');
     });
     Route::post('/logout',[LoginController::class,'userLogout'])->name('logout')->middleware(['auth','back']); 
 
