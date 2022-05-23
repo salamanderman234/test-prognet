@@ -91,7 +91,7 @@
                                     <label class="form-check-label tambahan" for="remember">Remember Me</label>
                                 </div>
                                 <div class="col-6 d-flex justify-content-end">
-                                    <a href="" class="tambahan">Forgot Password</a>
+                                    <a href="{{ route('password.request') }}" class="tambahan">Forgot Password</a>
                                 </div>
                             </div>
                         </div>

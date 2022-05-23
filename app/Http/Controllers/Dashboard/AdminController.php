@@ -19,6 +19,12 @@ class AdminController extends Controller
         $transaction = json_encode($data_transaction);
         return $transaction;
     }
+    public function get_chart_data_year(){
+        $year = [date('Y',strtotime('-2 year')),date('Y',strtotime('-1 year')),date('Y')];
+        $data_transaction = \DB::select('SELECT YEAR(updated_at) AS year,COUNT(updated_at) AS jumlah FROM `transactions` WHERE `status` = "Sampai di tujuan" AND (YEAR(updated_at)="'.$year[0].'" OR YEAR(updated_at)="'.$year[1].'" OR YEAR(updated_at)="'.$year[2].'") GROUP BY YEAR(updated_at)');
+        $transaction = json_encode($data_transaction);
+        return $transaction;
+    }
 
     public function index()
     {

@@ -89,6 +89,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::post('/logout',[LoginController::class,'adminLogout'])->name('logout');
 
         Route::post('/get_chart',[AdminController::class,'get_chart_data'])->name('get_chart');
+        Route::post('/get_chart_year',[AdminController::class,'get_chart_data_year'])->name('get_chart_year');
 
         //prefix untuk table
         Route::prefix('/table')->name('table.')->group(function () {

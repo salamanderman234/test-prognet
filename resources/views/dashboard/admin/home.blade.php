@@ -160,14 +160,22 @@
                     <div class="col">
                         <div class="card shadow">
                             <div class="card-header border-0">
-                                <div class="row align-items-center">
-                                    <div class="col-8">
-                                        <h3 class="mb-0">Sales</h3>
+                                <div class="row align-items-center mb-5">
+                                    <div class="col-6">
+                                        <h3 class="mb-0 text-center">Sales Perbulan</h3>
+                                    </div>
+                                    <div class="col-6">
+                                        <h3 class="mb-0 text-center">Sales Pertahun</h3>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12" style="height:30vh; width:100%">
-                                <canvas id="myChart" height="80px"></canvas>
+                            <div class="row">
+                                <div class="col-6" style=" width:100%">
+                                    <canvas id="myChart" height="80px"></canvas>
+                                </div>
+                                <div class="col-6" style=" width:100%">
+                                    <canvas id="myChart1" height="80px"></canvas>
+                                </div>
                             </div>
                             <div class="card-footer py-4">
                                 <nav class="d-flex justify-content-end" aria-label="...">
@@ -188,8 +196,11 @@
         <script>
             const csrf = $('meta[name="csrf-token"]').attr('content')
             const ctx = document.getElementById('myChart').getContext('2d');
-            const label = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+            const ctx1 = document.getElementById('myChart1').getContext('2d');
+            const label = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            const yearlabel = ['0','0','0']
             let datas = [0,0,0,0,0,0,0,0,0,0,0,0]
+            let yeardata = [0,0,0]
             $.ajaxSetup({
                 headers:
                 { 'X-CSRF-TOKEN': csrf }
@@ -205,7 +216,7 @@
                     data.forEach(element => {
                         datas[element.bulan-1] = element.jumlah
                     });
-                    console.log(datas)
+                    console.log()
                 }
                 const myChart = new Chart(ctx, {
                     type: 'bar',
@@ -253,7 +264,49 @@
                         }
                     }
                 });
+                
             });
+            request_year = $.ajax({
+                url: "{{ route('admin.get_chart_year') }}",
+                type: "post",
+            });
+            request_year.done(function (response, textStatus, jqXHR){
+                data = JSON.parse(response)
+                if(data.length > 0){
+                    data.forEach((element,index) => {
+                        yearlabel[index] = element.year
+                        yeardata[index] = element.jumlah
+                    });
+                }
+                const myChart1 = new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: yearlabel,
+                        datasets: [{
+                            label: 'Sales',
+                            data: yeardata,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            })
         </script>
     </body>
 </html>
